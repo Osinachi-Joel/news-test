@@ -43,7 +43,7 @@ export default function MoreStories() {
         <div className="lg:col-span-2">
           <div className="relative group cursor-pointer">
             <Link href="/story/dangote-refinery-crude-oil-shipment">
-              <div className="relative h-96 rounded-lg overflow-hidden">
+              <div className="relative h-96 rounded-xs overflow-hidden">
                 <Image
                   src="/placeholder.svg?height=400&width=600"
                   alt="Dangote Refinery official in hard hat at industrial facility"

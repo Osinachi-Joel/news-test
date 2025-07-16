@@ -57,26 +57,13 @@ export default function SportSection() {
         <div className="lg:col-span-2">
           <div className="group cursor-pointer">
             <Link href="/sport/mbappe-collision-transfer-deal">
-              <div className="relative h-64 md:h-80 rounded-lg overflow-hidden mb-4">
+              <div className="relative h-64 md:h-80 rounded-xs overflow-hidden mb-4">
                 <Image
                   src="/placeholder.svg?height=400&width=600"
                   alt="Kylian Mbappé in PSG jersey with Liverpool and Real Madrid logos"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                {/* Team Logos Overlay */}
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 space-y-4">
-                  <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-                      <span className="text-white font-bold text-xs">LFC</span>
-                    </div>
-                  </div>
-                  <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center border-2 border-purple-600">
-                      <span className="text-purple-600 font-bold text-xs">RM</span>
-                    </div>
-                  </div>
-                </div>
               </div>
               <div className="space-y-3">
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-200">
@@ -107,7 +94,7 @@ export default function SportSection() {
             {sidebarStories.map((story) => (
               <div key={story.id} className="group">
                 <Link href={`/story/${story.slug}`}>
-                  <div className="flex items-start space-x-3 hover:bg-gray-50 p-3 rounded transition-colors duration-200">
+                  <div className="flex items-start space-x-3 hover:bg-gray-50 p-3 rounded-xs transition-colors duration-200">
                     <div className="w-3 h-3 bg-red-500 rounded-sm mt-2 flex-shrink-0"></div>
                     <div className="flex-1">
                       <p className="text-gray-800 text-sm leading-relaxed group-hover:text-purple-600 transition-colors duration-200 mb-2">
@@ -120,7 +107,7 @@ export default function SportSection() {
                         alt={story.title}
                         width={64}
                         height={48}
-                        className="object-cover rounded"
+                        className="object-cover rounded-xs"
                       />
                     </div>
                   </div>

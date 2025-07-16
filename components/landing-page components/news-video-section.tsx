@@ -82,7 +82,7 @@ export default function NewsVideosSection() {
         {videoNews.map((video) => (
           <div key={video.id} className="group cursor-pointer">
             <Link href={video.videoUrl}>
-              <div className="relative rounded-lg overflow-hidden mb-3">
+              <div className="relative rounded-xs overflow-hidden mb-3">
                 <div className="relative h-48">
                   <Image
                     src={video.thumbnail || "/placeholder.svg"}

@@ -53,7 +53,7 @@ export default function FeaturedStories() {
             {/* Featured Article */}
             <div className="group cursor-pointer">
               <Link href="/featured/russian-tourists-north-korea">
-                <div className="relative h-60 rounded-lg overflow-hidden mb-3">
+                <div className="relative h-60 rounded-xs overflow-hidden mb-3">
                   <Image
                     src="/placeholder.svg?height=300&width=400"
                     alt="Russian tourists at airport terminal with luggage"
@@ -102,7 +102,7 @@ export default function FeaturedStories() {
             {/* Opinion Article */}
             <div className="group cursor-pointer">
               <Link href="/opinion/scrap-constituency-projects">
-                <div className="relative h-60 rounded-lg overflow-hidden mb-3">
+                <div className="relative h-60 rounded-xs overflow-hidden mb-3">
                   <Image
                     src="/placeholder.svg?height=300&width=400"
                     alt="Gavel and scales of justice on books"

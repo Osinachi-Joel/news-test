@@ -57,7 +57,7 @@ export default function PoliticsSection() {
         <div className="lg:col-span-2">
           <div className="group cursor-pointer">
             <Link href="/politics/falana-fuel-subsidy-removal">
-              <div className="relative h-64 md:h-80 rounded-lg overflow-hidden mb-4">
+              <div className="relative h-64 md:h-80 rounded-xs overflow-hidden mb-4">
                 <Image
                   src="/placeholder.svg?height=400&width=600"
                   alt="Red fuel pump nozzle being inserted into car fuel tank"
@@ -95,7 +95,7 @@ export default function PoliticsSection() {
               <div key={story.id} className="group">
                 <Link href={`/story/${story.slug}`}>
                   <div className="flex items-start space-x-3 hover:bg-gray-50 p-3 rounded transition-colors duration-200">
-                    <div className="w-3 h-3 bg-red-500 rounded-sm mt-2 flex-shrink-0"></div>
+                    <div className="w-3 h-3 bg-red-500 rounded-xs mt-2 flex-shrink-0"></div>
                     <div className="flex-1">
                       <p className="text-gray-800 text-sm leading-relaxed group-hover:text-purple-600 transition-colors duration-200 mb-2">
                         {story.title}

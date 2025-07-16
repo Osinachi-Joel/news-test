@@ -48,7 +48,7 @@ export default function TopStories() {
         {/* Main Story */}
         <div className="relative group cursor-pointer md:row-span-2">
           <Link href={`/story/${stories[0].slug}`}>
-            <div className="relative h-72 md:h-full rounded-lg overflow-hidden">
+            <div className="relative h-76 rounded-xs overflow-hidden">
               <Image
                 src={stories[0].image || "/placeholder.svg"}
                 alt={stories[0].title}
@@ -70,7 +70,7 @@ export default function TopStories() {
           {stories.slice(1).map((story, idx) => (
             <div key={story.id} className={`relative group cursor-pointer ${idx === 2 ? 'col-span-2' : ''}`}>
               <Link href={`/story/${story.slug}`}>
-                <div className={`relative h-32 md:h-36 rounded-lg overflow-hidden w-full`}>
+                <div className={`relative h-32 md:h-36 rounded-xs overflow-hidden w-full`}>
                   <Image
                     src={story.image || "/placeholder.svg"}
                     alt={story.title}
