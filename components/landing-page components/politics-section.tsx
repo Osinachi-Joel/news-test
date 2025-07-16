@@ -44,15 +44,15 @@ const sidebarStories: SidebarStory[] = [
 
 export default function PoliticsSection() {
   return (
-    <section className="container mx-auto px-4 py-8">
+    <section className="container mx-auto p-4 border-t border-b border-gray-300">
       {/* Section Header */}
       <div className="flex items-center mb-6">
         <div className="w-1 h-6 bg-purple-900 mr-3"></div>
-        <h2 className="text-2xl font-bold text-gray-800">POLITICS</h2>
+        <h2 className="text-xl font-bold text-gray-800">POLITICS</h2>
         <ChevronRight className="w-5 h-5 text-gray-600 ml-2" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:divide-x lg:divide-gray-300">
         {/* Main Featured Article */}
         <div className="lg:col-span-2">
           <div className="group cursor-pointer">
@@ -65,11 +65,11 @@ export default function PoliticsSection() {
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <div className="space-y-3">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-200">
+              <div className="space-y-1">
+                <h3 className="text-2xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-200">
                   Falana Asks FG To Review Fuel Subsidy Removal
                 </h3>
-                <p className="text-gray-600 text-lg leading-relaxed">
+                <p className="text-gray-600 text-md leading-relaxed">
                   Human rights lawyer Femi Falana (SAN) wants the Federal Government to review the fuel subsidy removal
                   policy owing to claims that Nigeria is still paying for it.
                 </p>
@@ -104,7 +104,7 @@ export default function PoliticsSection() {
                     <div className="w-16 h-12 flex-shrink-0">
                       <Image
                         src={story.image || "/placeholder.svg"}
-                        alt={story.title}
+                        alt="/placeholder.svg"
                         width={64}
                         height={48}
                         className="object-cover rounded"

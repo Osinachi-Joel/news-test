@@ -40,7 +40,7 @@ export default function HomePage() {
           <button
             type="button"
             aria-label="Scroll left"
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-80 rounded-full shadow-lg p-2 text-3xl text-pink-600 hover:bg-pink-100 transition-all border-2 border-pink-400"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 text-3xl text-pink-600"
             onClick={() => {
               if (currentIdx > 0) scrollToSection(currentIdx - 1);
             }}
@@ -63,7 +63,7 @@ export default function HomePage() {
           <button
             type="button"
             aria-label="Scroll right"
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-80 rounded-full shadow-lg p-2 text-3xl text-pink-600 hover:bg-pink-100 transition-all border-2 border-pink-400"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 text-3xl text-pink-600"
             onClick={() => {
               if (currentIdx < sectionCount - 1) scrollToSection(currentIdx + 1);
             }}
