@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Search, Instagram, Facebook, Twitter, Linkedin } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 const footerLinks = {
   column1: [
@@ -46,8 +47,7 @@ export default function Footer() {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <div className="bg-pink-600 px-3 py-1 text-white font-bold text-lg">AGC</div>
-            <span className="ml-1 font-bold text-lg">NEWSNET</span>
+            <Image src="/logo.svg" alt="AGC Logo" width={100} height={100} />
           </Link>
 
           {/* Search Bar */}

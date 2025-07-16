@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 export default function MainNavbar() {
   return (
@@ -9,8 +10,7 @@ export default function MainNavbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-8">
             <Link href="/" className="flex items-center">
-              <div className="bg-pink-600 px-3 py-1 text-white font-bold text-lg">AGC</div>
-              <span className="ml-1 font-bold text-lg">NEWSNET</span>
+              <Image src="/logo.svg" alt="AGC Logo" width={100} height={100} />
             </Link>
 
             <div className="hidden md:flex space-x-6">
