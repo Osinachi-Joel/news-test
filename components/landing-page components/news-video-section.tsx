@@ -103,7 +103,8 @@ export default function NewsVideosSection() {
 
                   {/* Category Badge */}
                   <div className="absolute top-3 left-3">
-                    <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded">{video.category}</span>
+                    <span className="inline-block text-white text-xs px-3 py-2 rounded-xl font-medium 
+                    bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-400">{video.category}</span>
                   </div>
 
                   {/* Duration Badge */}

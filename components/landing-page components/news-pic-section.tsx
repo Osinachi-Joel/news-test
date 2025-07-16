@@ -77,20 +77,6 @@ export default function NewsPicturesSection() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
 
-                  {/* Team Logos Overlay */}
-                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2 space-y-4">
-                    <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">LFC</span>
-                      </div>
-                    </div>
-                    <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center border-2 border-purple-600">
-                        <span className="text-purple-600 font-bold text-xs">RM</span>
-                      </div>
-                    </div>
-                  </div>
-
                   {/* Title Overlay */}
                   <div className="absolute bottom-6 left-6 right-6">
                     <h3 className="text-white text-xl md:text-2xl font-bold leading-tight group-hover:text-gray-200 transition-colors duration-200">
