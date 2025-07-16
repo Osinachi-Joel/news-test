@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ChevronRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
@@ -59,7 +59,7 @@ export default function MissedStoriesSection() {
             <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
             <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
           </div>
-          <ChevronRight className="w-5 h-5 text-gray-600" />
+          <ArrowRight className="w-4 h-4 text-gray-600" />
         </div>
       </div>
 
@@ -96,28 +96,26 @@ export default function MissedStoriesSection() {
         {/* Newsletter Signup */}
         <div className="w">
           <div className="flex items-start space-x-4">
-            <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+            <div className="flex-1">
+              <p className="text-gray-800 font-medium mb-2 text-sm flex flex-row">
+              <div className="w-10 h-10 bg-gray-100 rounded-full flex mr-2">
                 <Image
                   src="/email.svg"
                   alt="Betano Advertisement"
                   width={100}
                   height={100}
                 />
-              </div>
-            </div>
-            <div className="flex-1">
-              <p className="text-gray-800 font-medium mb-4">
-                Get the latest news and stories from around Africa directly into
+                </div>
+                Get the latest news and stories from <br /> around Africa directly into
                 your inbox daily.
               </p>
               <div className="space-y-3">
                 <Input
                   type="email"
                   placeholder="Enter your email address"
-                  className="w-full"
+                  className="w-3/4"
                 />
-                <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white">
+                <Button className="w-3/4 bg-pink-600 hover:bg-pink-700 text-white">
                   Get Me In
                 </Button>
               </div>
@@ -126,7 +124,7 @@ export default function MissedStoriesSection() {
         </div>
 
         {/* Betano Advertisement */}
-        <div className="rounded-lg p-6 text-white  overflow-hidden">
+        <div className="rounded-lg p-6 text-white overflow-hidden">
           <Image
             src="/betads.svg"
             alt="Betano Advertisement"

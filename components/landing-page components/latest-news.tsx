@@ -64,24 +64,21 @@ export default function LatestNews() {
         </div>
         </div>
       {/* News Cards */}
-      <div className="relative">
-        <div className="flex overflow-x-auto gap-6 scrollbar-hide pb-2" style={{scrollSnapType:'x mandatory'}}>
-          {latestNews.map((news, idx) => (
-            <div key={idx} className="min-w-[354px] max-w-[354px] flex-shrink-0 rounded-2xl bg-white shadow-md relative scroll-snap-align-start">
-              <div className="relative h-48 rounded-2xl overflow-hidden">
-                <Image src={news.image} alt={news.title} layout="fill" objectFit="cover" className="rounded-2xl" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute top-4 left-4">
-                  <span className="inline-block text-white text-xs px-3 py-2 rounded-xl font-medium bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-400">{news.category}</span>
-                </div>
-              </div>
-              <div className="absolute bottom-4 left-4 right-4">
-                <h3 className="text-white text-lg font-semibold drop-shadow-md">{news.title}</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-2">
+        {latestNews.map((news, idx) => (
+          <div key={idx} className="w-[240px] h-[300px] flex-shrink-0 rounded-2xl bg-white shadow-md relative">
+            <div className="relative w-full h-full rounded-2xl overflow-hidden">
+              <Image src={news.image} alt={news.title} width={400} height={300} className="rounded-2xl object-cover w-full h-full" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+              <div className="absolute top-4 left-4">
+                <span className="inline-block text-white text-xs px-3 py-2 rounded-xl font-medium bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-400">{news.category}</span>
               </div>
             </div>
-          ))}
-        </div>
-        
+            <div className="absolute bottom-4 left-4 right-4">
+              <h3 className="text-white text-lg font-semibold drop-shadow-md">{news.title}</h3>
+            </div>
+          </div>
+        ))}
       </div>
       {/* Advertisement Banners */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-20">
