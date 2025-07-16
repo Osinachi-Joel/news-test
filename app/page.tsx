@@ -36,41 +36,41 @@ export default function HomePage() {
       <LatestNews />
       <MoreStories />
       <div className="relative">
-        <button
-          type="button"
-          aria-label="Scroll left"
-          className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-80 rounded-full shadow-lg p-2 
-            text-3xl text-pink-600 hover:bg-pink-100 transition-all border-2 border-pink-400 
-            ${currentIdx === 0 ? 'opacity-50 cursor-not-allowed border-gray-400' : ''}`}
-          onClick={() => {
-            if (currentIdx > 0) scrollToSection(currentIdx - 1);
-          }}
-          disabled={currentIdx === 0}
-        >
-          <ChevronLeft className="w-8 h-8" />
-        </button>
-        <nav id="scrollable-nav" className="flex space-x-6 overflow-x-auto no-scrollbar py-4 px-2 h-[700px]" style={{scrollbarWidth:'none'}}>
-          <div ref={sectionRefs[0]} className="flex-shrink-0 min-w-[320px] h-full">
+        {currentIdx > 0 && (
+          <button
+            type="button"
+            aria-label="Scroll left"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-80 rounded-full shadow-lg p-2 text-3xl text-pink-600 hover:bg-pink-100 transition-all border-2 border-pink-400"
+            onClick={() => {
+              if (currentIdx > 0) scrollToSection(currentIdx - 1);
+            }}
+          >
+            <ChevronLeft className="w-8 h-8" />
+          </button>
+        )}
+        <nav id="scrollable-nav" className="flex overflow-x-hidden no-scrollbar py-4 px-0 h-[700px] w-full" style={{scrollbarWidth:'none'}}>
+          <div ref={sectionRefs[0]} className="flex-shrink-0 min-w-full w-full h-full flex items-center justify-center">
             <PoliticsSection />
           </div>
-          <div ref={sectionRefs[1]} className="flex-shrink-0 min-w-[320px] h-full">
+          <div ref={sectionRefs[1]} className="flex-shrink-0 min-w-full w-full h-full flex items-center justify-center">
             <BusinessSection />
           </div>
-          <div ref={sectionRefs[2]} className="flex-shrink-0 min-w-[320px] h-full">
+          <div ref={sectionRefs[2]} className="flex-shrink-0 min-w-full w-full h-full flex items-center justify-center">
             <SportSection />
           </div>
         </nav>
-        <button
-          type="button"
-          aria-label="Scroll right"
-          className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-80 rounded-full shadow-lg p-2 text-3xl text-pink-600 hover:bg-pink-100 transition-all border-2 border-pink-400 ${currentIdx === sectionCount - 1 ? 'opacity-50 cursor-not-allowed border-e-gray-400' : ''}`}
-          onClick={() => {
-            if (currentIdx < sectionCount - 1) scrollToSection(currentIdx + 1);
-          }}
-          disabled={currentIdx === sectionCount - 1}
-        >
-          <ChevronRight className="w-8 h-8" />
-        </button>
+        {currentIdx < sectionCount - 1 && (
+          <button
+            type="button"
+            aria-label="Scroll right"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-80 rounded-full shadow-lg p-2 text-3xl text-pink-600 hover:bg-pink-100 transition-all border-2 border-pink-400"
+            onClick={() => {
+              if (currentIdx < sectionCount - 1) scrollToSection(currentIdx + 1);
+            }}
+          >
+            <ChevronRight className="w-8 h-8" />
+          </button>
+        )}
       </div>
       <FeaturedStories />
       <NewsVideosSection />
