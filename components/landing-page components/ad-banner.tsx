@@ -7,7 +7,7 @@ export default function AdvertisementBanner() {
       <Image
         src="/ad.svg"
         alt="Advertisement Banner"
-        width={1200}
+        width={1000}
         height={90}
       />
     </div>
