@@ -4,6 +4,8 @@ import TopNavbar from "@/components/landing-page components/top-navbar"
 import AdvertisementBanner from "@/components/section-components/ad-banner"
 import MainNavbar from "@/components/landing-page components/main-navbar"
 import Footer from "@/components/landing-page components/footer"
+import LatestSection from "@/components/section-components/latest-section"
+import OtherStories from "@/components/section-components/other-stories"
 
 interface SectionPageProps {
   params: { section: string }
@@ -19,9 +21,10 @@ export default function SectionPage({ params }: SectionPageProps) {
       <TopNavbar />
       <AdvertisementBanner />
       <MainNavbar />
-      <main className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold capitalize text-center mb-8">{section}</h1>
-        {/* Section-specific content can go here */}
+      <main className="">
+        {/* <h1 className="text-3xl font-bold capitalize text-center mb-8">{section}</h1> */}
+        <LatestSection section={section} />
+        <OtherStories section={section} />
       </main>
       <Footer />
     </>

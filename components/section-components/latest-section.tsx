@@ -40,10 +40,10 @@ const stories: Story[] = [
   },
 ]
 
-export default function TopStories() {
+export default function LatestSection({ section }: { section: string }) {
   return (
     <section className="container bg-white mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">TOP STORIES</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">Latest in {section}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Main Story */}
         <div className="relative group cursor-pointer md:row-span-2">
