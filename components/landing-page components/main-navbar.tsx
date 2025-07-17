@@ -1,9 +1,12 @@
+"use client"
 import Link from "next/link"
 import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 
 export default function MainNavbar() {
+  const pathname = usePathname();
   return (
     <nav className="bg-[#1b1b1b] text-white">
       <div className="mx-auto px-4">
@@ -14,28 +17,28 @@ export default function MainNavbar() {
             </Link>
 
             <div className="hidden md:flex space-x-6">
-              <Link href="/" className="text-pink-400 border-b-2 border-pink-400 pb-4 hover:text-pink-300">
+              <Link href="/" className={`${pathname === '/' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
                 Home
               </Link>
-              <Link href="/africa" className="hover:text-pink-400 pb-4">
+              <Link href="/africa" className={`${pathname === '/africa' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
                 Africa
               </Link>
-              <Link href="/politics" className="hover:text-pink-400 pb-4">
+              <Link href="/politics" className={`${pathname === '/politics' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
                 Politics
               </Link>
-              <Link href="/business" className="hover:text-pink-400 pb-4">
+              <Link href="/business" className={`${pathname === '/business' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
                 Business
               </Link>
-              <Link href="/sport" className="hover:text-pink-400 pb-4">
+              <Link href="/sport" className={`${pathname === '/sport' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
                 Sport
               </Link>
-              <Link href="/health" className="hover:text-pink-400 pb-4">
+              <Link href="/health" className={`${pathname === '/health' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
                 Health
               </Link>
-              <Link href="/tech" className="hover:text-pink-400 pb-4">
+              <Link href="/tech" className={`${pathname === '/tech' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
                 Tech
               </Link>
-              <Link href="/opinion" className="hover:text-pink-400 pb-4">
+              <Link href="/opinion" className={`${pathname === '/opinion' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
                 Opinion
               </Link>
             </div>
