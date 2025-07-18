@@ -21,7 +21,7 @@ export default function BusinessSection() {
       setError(null)
       try {
         const res = await fetch(
-          "https://api.agcnewsnet.com/api/general/categories/2/stories?page=1&per_page=15"
+          "https://api.agcnewsnet.com/api/general/categories/2/stories?page=1&per_page=6"
         )
         if (!res.ok) throw new Error("Failed to fetch stories")
         const data = await res.json()
@@ -31,8 +31,8 @@ export default function BusinessSection() {
           title: string
           banner_image?: string
         }
-        // Map API data to SidebarStory[] (first 5 only)
-        const stories = (data?.data?.data as ApiStory[] || []).slice(0, 5).map((story) => ({
+        // Map API data to SidebarStory[] (first 6 only)
+        const stories = (data?.data?.data as ApiStory[] || []).slice(0, 6).map((story) => ({
           id: String(story.id),
           title: story.title,
           image: story.banner_image || "/placeholder.svg?height=80&width=80",
@@ -89,22 +89,22 @@ export default function BusinessSection() {
           <div className="space-y-4">
             {loading && <div className="text-gray-500">Loading...</div>}
             {error && <div className="text-red-500">{error}</div>}
-            {!loading && !error && sidebarStories.slice(1).map((story) => (
+            {!loading && !error && sidebarStories.slice(1, 6).map((story) => (
               <div key={story.id} className="group">
                 <Link href={`/stories/${story.id}`}>
-                  <div className="flex items-start space-x-3 hover:bg-gray-50 p-3 rounded transition-colors duration-200">
+                  <div className="flex items-start space-x-3 hover:bg-gray-50 p-1 rounded transition-colors duration-200">
                     <div className="w-3 h-3 bg-red-500 rounded-xs mt-2 flex-shrink-0"></div>
                     <div className="flex-1">
-                      <p className="text-gray-800 text-sm leading-relaxed group-hover:text-purple-600 transition-colors duration-200 mb-2">
+                      <p className="text-gray-800 text-xs leading-relaxed group-hover:text-purple-600 transition-colors duration-200">
                         {story.title}
                       </p>
                     </div>
-                    <div className="w-16 h-12 flex-shrink-0">
+                    <div className="">
                       <Image
                         src={story.image || "/placeholder.svg"}
-                        alt="Business"
-                        width={64}
-                        height={48}
+                        alt="BUSINESS"
+                        width={100}
+                        height={40}
                         className="object-cover rounded"
                       />
                     </div>
