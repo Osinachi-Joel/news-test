@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
+import { useEffect, useState } from "react"
 
 interface SidebarStory {
   id: string
@@ -9,89 +10,86 @@ interface SidebarStory {
   slug: string
 }
 
-const sidebarStories: SidebarStory[] = [
-  {
-    id: "1",
-    title: "Foden Sparkles As Man City Crush Spineless Man United",
-    image: "/placeholder.svg?height=80&width=80",
-    slug: "foden-man-city-crush-man-united-business-1",
-  },
-  {
-    id: "2",
-    title: "Foden Sparkles As Man City Crush Spineless Man United",
-    image: "/placeholder.svg?height=80&width=80",
-    slug: "foden-man-city-crush-man-united-business-2",
-  },
-  {
-    id: "3",
-    title: "Foden Sparkles As Man City Crush Spineless Man United",
-    image: "/placeholder.svg?height=80&width=80",
-    slug: "foden-man-city-crush-man-united-business-3",
-  },
-  {
-    id: "4",
-    title: "Foden Sparkles As Man City Crush Spineless Man United",
-    image: "/placeholder.svg?height=80&width=80",
-    slug: "foden-man-city-crush-man-united-business-4",
-  },
-  {
-    id: "5",
-    title: "Foden Sparkles As Man City Crush Spineless Man United",
-    image: "/placeholder.svg?height=80&width=80",
-    slug: "foden-man-city-crush-man-united-business-5",
-  },
-]
-
 export default function BusinessSection() {
+  const [sidebarStories, setSidebarStories] = useState<SidebarStory[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function fetchStories() {
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await fetch(
+          "https://api.agcnewsnet.com/api/general/categories/2/stories?page=1&per_page=15"
+        )
+        if (!res.ok) throw new Error("Failed to fetch stories")
+        const data = await res.json()
+        // Define the type for the API story object
+        type ApiStory = {
+          id: number | string
+          title: string
+          banner_image?: string
+        }
+        // Map API data to SidebarStory[] (first 5 only)
+        const stories = (data?.data?.data as ApiStory[] || []).slice(0, 5).map((story) => ({
+          id: String(story.id),
+          title: story.title,
+          image: story.banner_image || "/placeholder.svg?height=80&width=80",
+          slug: String(story.id),
+        }))
+        setSidebarStories(stories)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Unknown error")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchStories()
+  }, [])
+
   return (
     <section className="container mx-auto p-4 border-t border-b border-gray-300">
       {/* Section Header */}
       <div className="flex items-center mb-6">
         <div className="w-1 h-6 bg-purple-900 mr-3"></div>
-        <h2 className="text-2xl font-bold text-gray-800">BUSINESS</h2>
+        <h2 className="text-xl font-bold text-gray-800">BUSINESS</h2>
         <ChevronRight className="w-5 h-5 text-gray-600 ml-2" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:divide-x lg:divide-gray-300">
         {/* Main Featured Article */}
         <div className="lg:col-span-2">
-          <div className="group cursor-pointer">
-            <Link href="/business/naira-falling-nigeria-news">
-              <div className="relative h-64 md:h-80 rounded-xs overflow-hidden mb-4">
-                <Image
-                  src="/placeholder.svg?height=400&width=600"
-                  alt="Hands holding Nigerian naira banknotes with calculator and documents on desk"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-200">
-                  Any red line for the falling naira? | The Nigeria News - Nigeria and...
-                </h3>
-                <p className="text-gray-600 text-md leading-relaxed">
-                  Human rights lawyer Femi Falana (SAN) wants the Federal Government to review the fuel subsidy removal
-                  policy owing to claims that Nigeria is still paying for it.
-                </p>
-                <div className="flex items-center space-x-4 text-sm text-gray-500">
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                    <span>Ogechi Joseph</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
-                    <span>Posted 13 mins ago</span>
-                  </div>
+          {loading && <div className="text-gray-500">Loading...</div>}
+          {error && <div className="text-red-500">{error}</div>}
+          {!loading && !error && sidebarStories.length > 0 && (
+            <div className="group cursor-pointer p-4">
+              <Link href={`/stories/${sidebarStories[0].id}`}>
+                <div className="relative h-64 md:h-80 rounded-xs overflow-hidden mb-4">
+                  <Image
+                    src={sidebarStories[0].image}
+                    alt="Business"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
                 </div>
-              </div>
-            </Link>
-          </div>
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-200">
+                    {sidebarStories[0].title}
+                  </h3>
+                  {/* Optionally, you can display a description or author if you fetch and store them in SidebarStory */}
+                </div>
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Sidebar Stories */}
         <div className="lg:col-span-1">
           <div className="space-y-4">
-            {sidebarStories.map((story) => (
+            {loading && <div className="text-gray-500">Loading...</div>}
+            {error && <div className="text-red-500">{error}</div>}
+            {!loading && !error && sidebarStories.slice(1).map((story) => (
               <div key={story.id} className="group">
                 <Link href={`/stories/${story.id}`}>
                   <div className="flex items-start space-x-3 hover:bg-gray-50 p-3 rounded transition-colors duration-200">
@@ -104,7 +102,7 @@ export default function BusinessSection() {
                     <div className="w-16 h-12 flex-shrink-0">
                       <Image
                         src={story.image || "/placeholder.svg"}
-                        alt={story.title}
+                        alt="Business"
                         width={64}
                         height={48}
                         className="object-cover rounded"
