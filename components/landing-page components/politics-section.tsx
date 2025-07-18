@@ -93,7 +93,7 @@ export default function PoliticsSection() {
           <div className="space-y-4">
             {sidebarStories.map((story) => (
               <div key={story.id} className="group">
-                <Link href={`/story/${story.slug}`}>
+                <Link href={`/stories/${story.id}`}>
                   <div className="flex items-start space-x-3 hover:bg-gray-50 p-3 rounded transition-colors duration-200">
                     <div className="w-3 h-3 bg-red-500 rounded-xs mt-2 flex-shrink-0"></div>
                     <div className="flex-1">
@@ -104,7 +104,7 @@ export default function PoliticsSection() {
                     <div className="w-16 h-12 flex-shrink-0">
                       <Image
                         src={story.image || "/placeholder.svg"}
-                        alt="/placeholder.svg"
+                        alt={"/placeholder.svg"}
                         width={64}
                         height={48}
                         className="object-cover rounded"

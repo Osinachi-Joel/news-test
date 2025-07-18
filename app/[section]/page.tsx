@@ -1,4 +1,3 @@
-// Dynamic route for all main navbar links except Home
 import { redirect } from "next/navigation"
 import TopNavbar from "@/components/landing-page components/top-navbar"
 import AdvertisementBanner from "@/components/section-components/ad-banner"

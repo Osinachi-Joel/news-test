@@ -35,6 +35,14 @@ const moreStories: MoreStory[] = [
   },
 ]
 
+const featuredStory = {
+  id: "0",
+  title: "Dangote Refinery's second crude oil shipment leaves US for Nigeria",
+  subtitle: "First cargo to arrive next week",
+  author: "Ogechi Joseph",
+  image: "/placeholder.svg?height=400&width=600",
+};
+
 export default function MoreStories() {
   return (
     <section className="container mx-auto px-4 py-8">
@@ -42,10 +50,10 @@ export default function MoreStories() {
         {/* Featured Article */}
         <div className="lg:col-span-2">
           <div className="relative group cursor-pointer">
-            <Link href="/story/dangote-refinery-crude-oil-shipment">
+            <Link href={`/stories/${featuredStory.id}`}>
               <div className="relative h-96 rounded-xs overflow-hidden">
                 <Image
-                  src="/placeholder.svg?height=400&width=600"
+                  src={featuredStory.image}
                   alt="Dangote Refinery official in hard hat at industrial facility"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -68,12 +76,12 @@ export default function MoreStories() {
                 {/* Article Content */}
                 <div className="absolute bottom-6 left-6 right-6">
                   <h2 className="text-white text-2xl md:text-3xl font-bold leading-tight mb-2">
-                    Dangote Refinery&apos;s second crude oil shipment leaves US for Nigeria
+                    {featuredStory.title}
                   </h2>
-                  <p className="text-gray-200 text-lg mb-3">First cargo to arrive next week</p>
+                  <p className="text-gray-200 text-lg mb-3">{featuredStory.subtitle}</p>
                   <div className="flex items-center text-white text-sm">
                     <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                    <span>Ogechi Joseph</span>
+                    <span>{featuredStory.author}</span>
                   </div>
                 </div>
               </div>
@@ -88,7 +96,7 @@ export default function MoreStories() {
             <div className="space-y-2">
               {moreStories.map((story) => (
                 <div key={story.id} className="group">
-                  <Link href={`/story/${story.slug}`}>
+                  <Link href={`/stories/${story.id}`}>
                     <div className="flex items-start space-x-3 hover:bg-gray-50 p-2 rounded transition-colors duration-200">
                       <div className="w-3 h-3 bg-red-500 rounded mt-2 flex-shrink-0"></div>
                       <p className="text-gray-800 text-sm leading-relaxed group-hover:text-pink-600 transition-colors duration-200">

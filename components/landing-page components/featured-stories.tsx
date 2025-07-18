@@ -85,7 +85,7 @@ export default function FeaturedStories() {
             <div className="space-y-3">
               {newsHeadlines.map((headline) => (
                 <div key={headline.id}>
-                  <Link href={`/story/${headline.slug}`}>
+                  <Link href={`/stories/${headline.id}`}>
                     <p className="text-gray-800 text-sm leading-relaxed hover:text-purple-600 transition-colors duration-200">
                       {headline.title}
                     </p>
@@ -134,7 +134,7 @@ export default function FeaturedStories() {
             <div className="space-y-3">
               {newsHeadlines.map((headline) => (
                 <div key={`opinion-${headline.id}`}> 
-                  <Link href={`/story/${headline.slug}`}>
+                  <Link href={`/stories/${headline.id}`}>
                     <p className="text-gray-800 text-sm leading-relaxed hover:text-purple-600 transition-colors duration-200">
                       {headline.title}
                     </p>

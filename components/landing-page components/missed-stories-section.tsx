@@ -97,7 +97,7 @@ export default function MissedStoriesSection() {
         <div className="w">
           <div className="flex items-start space-x-4">
             <div className="flex-1">
-              <p className="text-gray-800 font-medium mb-2 text-sm flex flex-row">
+              <div className="text-gray-800 font-medium mb-2 text-sm flex flex-row">
               <div className="w-10 h-10 bg-gray-100 rounded-full flex mr-2">
                 <Image
                   src="/email.svg"
@@ -108,7 +108,7 @@ export default function MissedStoriesSection() {
                 </div>
                 Get the latest news and stories from <br /> around Africa directly into
                 your inbox daily.
-              </p>
+              </div>
               <div className="space-y-3">
                 <Input
                   type="email"

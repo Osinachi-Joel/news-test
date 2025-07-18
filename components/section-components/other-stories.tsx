@@ -40,7 +40,7 @@ export default function OtherStories({ section }: { section: string }) {
                   <div className="text-xs text-gray-500 mb-2">Posted {story.date}</div>
                   <p className="text-gray-700 text-sm mb-3 line-clamp-3">{story.excerpt}</p>
                 </div>
-                <Link href={`/story/${story.slug}`} className="inline-block mt-2">
+                <Link href={`/stories/${story.id}`} className="inline-block mt-2">
                   <button className="px-4 py-1 text-xs bg-gray-100 rounded-2xl border border-gray-300 hover:bg-gray-200 transition">Continue reading</button>
                 </Link>
               </div>

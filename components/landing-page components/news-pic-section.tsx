@@ -67,7 +67,7 @@ export default function NewsPicturesSection() {
         {featuredStory && (
           <div className="lg:col-span-2">
             <div className="group cursor-pointer">
-              <Link href={`/pictures/${featuredStory.slug}`}>
+              <Link href={`/stories/${featuredStory.id}`}>
                 <div className="relative h-80 rounded-xs overflow-hidden">
                   <Image
                     src={featuredStory.image || "/placeholder.svg"}
@@ -94,7 +94,7 @@ export default function NewsPicturesSection() {
           <div className="grid grid-cols-2 gap-4">
             {sideStories.map((story) => (
               <div key={story.id} className="group cursor-pointer">
-                <Link href={`/pictures/${story.slug}`}>
+                <Link href={`/stories/${story.id}`}>
                   <div className="relative h-38 rounded-xs overflow-hidden">
                     <Image
                       src={story.image || "/placeholder.svg"}
