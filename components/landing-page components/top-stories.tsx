@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { useEffect, useState } from "react"
+import { Spinner } from "../ui/spinner"
 
 export default function TopStories() {
   const [stories, setStories] = useState<{
@@ -67,9 +68,11 @@ export default function TopStories() {
 
   if (loading) {
     return (
-      <section className="container bg-white mx-auto px-4 py-8">
+      <section className="container bg-white mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[300px]">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">TOP STORIES</h2>
-        <div>Loading...</div>
+        <div className="flex justify-center items-center w-full h-full py-12">
+          <Spinner />
+        </div>
       </section>
     )
   }
