@@ -70,7 +70,7 @@ export default function OtherStories({ section }: { section: string }) {
           {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
             <button
               key={n}
-              className={`w-8 h-8 flex items-center text-white justify-center rounded-md border ${n === 1 ? "bg-gray-800 text-white" : "bg-gray-400 hover:bg-gray-100"}`}
+              className={`w-8 h-8 flex items-center text-white hover:text-black justify-center rounded-md border ${n === 1 ? "bg-gray-800 text-white" : "bg-gray-400 hover:bg-gray-100"}`}
             >
               {n}
             </button>
