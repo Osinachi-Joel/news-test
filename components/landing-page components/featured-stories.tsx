@@ -1,42 +1,111 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
+import { useEffect, useState } from "react"
 
-interface NewsHeadline {
-  id: string
-  title: string
-  slug: string
+// Category interface
+interface Category {
+  category_id: number
+  category_name: string
+  total_stories: null
 }
 
-const newsHeadlines: NewsHeadline[] = [
-  {
-    id: "1",
-    title: "Binance: Nigeria orders cryptocurrency firm to pay $10bn",
-    slug: "binance-nigeria-cryptocurrency-10bn",
-  },
-  {
-    id: "2",
-    title: "Rivers Community Protests Alleged Killing Of Indigenes By Militia",
-    slug: "rivers-community-protests-killing-militia",
-  },
-  {
-    id: "3",
-    title: "Former NGX Group Chairman Abimbola Ogunbanjo Laid To Rest",
-    slug: "ngx-chairman-abimbola-ogunbanjo-laid-rest",
-  },
-  {
-    id: "4",
-    title: "Foden Sparkles As Man City Crush Spineless Man United",
-    slug: "foden-man-city-crush-man-united",
-  },
-  {
-    id: "5",
-    title: "Zamfara Verifies 3,079 Retirees, Settles N2.3bn Gratuity Backlog",
-    slug: "zamfara-retirees-gratuity-backlog",
-  },
-]
+// Story interface
+interface Story {
+  id: number
+  title: string
+  subtitle: string
+  description: string
+  status: string
+  type: string
+  author: string
+  content: string
+  featured: string
+  views: number
+  editors_pick: null
+  top_story: null
+  category: Category
+  banner_image: string
+  created_at: string
+  updated_at: string
+}
+
+// Editor pick interface
+interface EditorPick {
+  id: number
+  story: Story
+}
+
+// API response interface
+interface ApiResponse {
+  message: string
+  data: {
+    data: EditorPick[]
+    links: {
+      first: string
+      last: string
+      prev: null
+      next: string
+    }
+    meta: {
+      current_page: number
+      from: number
+      last_page: number
+      links: Array<{
+        url: string | null
+        label: string
+        active: boolean
+      }>
+      path: string
+      per_page: number
+      to: number
+      total: number
+    }
+  }
+}
 
 export default function FeaturedStories() {
+  const [stories, setStories] = useState<EditorPick[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchStories = async () => {
+      try {
+        const response = await fetch('https://api.agcnewsnet.com/api/general/editor-picks?page=1&per_page=15')
+        const data: ApiResponse = await response.json()
+        setStories(data.data.data)
+      } catch (error) {
+        console.error('Error fetching stories:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchStories()
+  }, [])
+
+  if (loading) {
+    return (
+      <section className="container mx-auto px-4 py-8 w-full">
+        <div className="flex items-center mb-6">
+          <div className="w-1 h-6 bg-purple-600 mr-3"></div>
+          <h2 className="text-2xl font-bold text-gray-800">FEATURED STORIES</h2>
+          <ChevronRight className="w-5 h-5 text-gray-600 ml-2" />
+        </div>
+        <div className="text-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
+        </div>
+      </section>
+    )
+  }
+
+  // Use first two stories for featured articles with images
+  const featuredStories = stories.slice(0, 2)
+  // Use remaining stories for headline lists
+  const headlineStories = stories.slice(2)
+
   return (
     <section className="container mx-auto px-4 py-8 w-full">
       {/* Section Header */}
@@ -51,43 +120,47 @@ export default function FeaturedStories() {
         <div className="lg:col-span-3">
           <div className="space-y-6">
             {/* Featured Article */}
-            <div className="group cursor-pointer">
-              <Link href="/featured/russian-tourists-north-korea">
-                <div className="relative h-60 rounded-xs overflow-hidden mb-3">
-                  <Image
-                    src="/placeholder.svg?height=300&width=400"
-                    alt="Russian tourists at airport terminal with luggage"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span className="inline-block text-white text-xs px-3 py-2 rounded-xl font-medium 
-                    bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-400">Travel</span>
+            {featuredStories[0] && (
+              <div className="group cursor-pointer">
+                <Link href={`/stories/${featuredStories[0].story.id}`}>
+                  <div className="relative h-60 rounded-xs overflow-hidden mb-3">
+                    <Image
+                      src={featuredStories[0].story.banner_image || "/placeholder.svg?height=300&width=400"}
+                      alt={featuredStories[0].story.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span className="inline-block text-white text-xs px-3 py-2 rounded-xl font-medium 
+                      bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-400">
+                        {featuredStories[0].story.category.category_name}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-200 mb-2">
-                  Dozens of Russian tourists were recently allowed to visit North Korea. Here&apos;s what they saw
-                </h3>
-                <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                    <span>Ogechi Joseph</span>
+                  <h3 className="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-200 mb-2">
+                    {featuredStories[0].story.title}
+                  </h3>
+                  <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-[#f52a32]  rounded-full mr-2"></div>
+                      <span>{featuredStories[0].story.author}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-[#f52a32] rounded-full mr-2"></div>
+                      <span>Posted {new Date(featuredStories[0].story.created_at).toLocaleDateString()}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
-                    <span>Posted 13 mins ago</span>
-                  </div>
-                </div>
-              </Link>
-            </div>
+                </Link>
+              </div>
+            )}
 
             {/* News Headlines List */}
             <div className="space-y-3">
-              {newsHeadlines.map((headline) => (
-                <div key={headline.id}>
-                  <Link href={`/stories/${headline.id}`}>
+              {headlineStories.slice(0, 5).map((story) => (
+                <div key={story.id}>
+                  <Link href={`/stories/${story.story.id}`}>
                     <p className="text-gray-800 text-sm leading-relaxed hover:text-purple-600 transition-colors duration-200">
-                      {headline.title}
+                      {story.story.title}
                     </p>
                   </Link>
                 </div>
@@ -100,43 +173,47 @@ export default function FeaturedStories() {
         <div className="lg:col-span-3">
           <div className="space-y-6">
             {/* Opinion Article */}
-            <div className="group cursor-pointer">
-              <Link href="/opinion/scrap-constituency-projects">
-                <div className="relative h-60 rounded-xs overflow-hidden mb-3">
-                  <Image
-                    src="/placeholder.svg?height=300&width=400"
-                    alt="Gavel and scales of justice on books"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span className="inline-block text-white text-xs px-3 py-2 rounded-xl font-medium 
-                    bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-400">Opinion</span>
+            {featuredStories[1] && (
+              <div className="group cursor-pointer">
+                <Link href={`/stories/${featuredStories[1].story.id}`}>
+                  <div className="relative h-60 rounded-xs overflow-hidden mb-3">
+                    <Image
+                      src={featuredStories[1].story.banner_image || "/placeholder.svg?height=300&width=400"}
+                      alt={featuredStories[1].story.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span className="inline-block text-white text-xs px-3 py-2 rounded-xl font-medium 
+                      bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-400">
+                        {featuredStories[1].story.category.category_name}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-200 mb-2">
-                  Scrap Constituency Projects
-                </h3>
-                <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                    <span>Ogechi Joseph</span>
+                  <h3 className="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-200 mb-2">
+                    {featuredStories[1].story.title}
+                  </h3>
+                  <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-[#f52a32]  rounded-full mr-2"></div>
+                      <span>{featuredStories[1].story.author}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-[#f52a32]  rounded-full mr-2"></div>
+                      <span>Posted {new Date(featuredStories[1].story.created_at).toLocaleDateString()}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
-                    <span>Posted 13 mins ago</span>
-                  </div>
-                </div>
-              </Link>
-            </div>
+                </Link>
+              </div>
+            )}
 
             {/* News Headlines List */}
             <div className="space-y-3">
-              {newsHeadlines.map((headline) => (
-                <div key={`opinion-${headline.id}`}> 
-                  <Link href={`/stories/${headline.id}`}>
+              {headlineStories.slice(5, 10).map((story) => (
+                <div key={`opinion-${story.id}`}> 
+                  <Link href={`/stories/${story.story.id}`}>
                     <p className="text-gray-800 text-sm leading-relaxed hover:text-purple-600 transition-colors duration-200">
-                      {headline.title}
+                      {story.story.title}
                     </p>
                   </Link>
                 </div>
