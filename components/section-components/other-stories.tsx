@@ -1,15 +1,18 @@
+"use client"
 import Image from "next/image"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { getCategoryId, fetchCategoryStories } from "@/lib/categories"
+import { Spinner } from "../ui/spinner"
 
-const stories = Array.from({ length: 5 }).map((_, i) => ({
-  id: `${i + 1}`,
-  title: "Dozens of Russian tourists were recently allowed to visit North Korea. Here's what they saw",
-  date: "1:32 AM, Sun March 10, 2024",
-  excerpt:
-    "Former President John Dramani Mahama has emphasized the importance of education to the country's development, noting that the sector consistently receives a significant portion of budgetary allocations from every government...",
-  image: "/placeholder.svg?height=120&width=120",
-  slug: `north-korea-russian-tourists-${i + 1}`,
-}))
+interface Story {
+  id: string
+  title: string
+  date: string
+  excerpt: string
+  image: string
+  slug: string
+}
 
 const ads = [
   { src: "/flakes.svg", alt: "Ad 1" },
@@ -18,6 +21,96 @@ const ads = [
 ]
 
 export default function OtherStories({ section }: { section: string }) {
+  const [stories, setStories] = useState<Story[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [totalStories, setTotalStories] = useState(0)
+
+  useEffect(() => {
+    async function fetchStories() {
+      setLoading(true)
+      setError(null)
+      
+      const categoryId = getCategoryId(section)
+      if (!categoryId) {
+        setError(`Category not found for section: ${section}`)
+        setLoading(false)
+        return
+      }
+
+      try {
+        const response = await fetchCategoryStories(categoryId, currentPage, 10)
+        if (!response) {
+          throw new Error("Failed to fetch stories")
+        }
+
+        const apiStories = response.data.data.map((story) => ({
+          id: story.id.toString(),
+          title: story.title,
+          date: new Date(story.created_at).toLocaleDateString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+            weekday: 'short',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+          }),
+          excerpt: story.description || story.subtitle || story.title,
+          image: story.banner_image || "/placeholder.svg?height=120&width=120",
+          slug: story.id.toString(),
+        }))
+
+        setStories(apiStories)
+        setTotalPages(response.data.meta.last_page)
+        setTotalStories(response.data.meta.total)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load stories")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchStories()
+  }, [section, currentPage])
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const startItem = (currentPage - 1) * 10 + 1
+  const endItem = Math.min(currentPage * 10, totalStories)
+
+  if (loading) {
+    return (
+      <section className="container mx-auto px-4 py-8">
+        <div className="flex items-center mb-6">
+          <div className="w-1 h-5 bg-purple-900 mr-3"></div>
+          <h2 className="text-lg font-bold text-gray-900 tracking-wide">OTHER STORIES IN <span className="uppercase">{section}</span></h2>
+        </div>
+        <div className="flex justify-center items-center py-12">
+          <Spinner />
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="container mx-auto px-4 py-8">
+        <div className="flex items-center mb-6">
+          <div className="w-1 h-5 bg-purple-900 mr-3"></div>
+          <h2 className="text-lg font-bold text-gray-900 tracking-wide">OTHER STORIES IN <span className="uppercase">{section}</span></h2>
+        </div>
+        <div className="text-center py-8 text-gray-500">
+          {error}
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="container mx-auto px-4 py-8">
       <div className="flex items-center mb-6">
@@ -64,18 +157,38 @@ export default function OtherStories({ section }: { section: string }) {
       </div>
       {/* Pagination */}
       <div className="flex items-center gap-8 mt-8 text-sm">
-        <span>Showing 1 - 10 of 68</span>
+        <span>Showing {startItem} - {endItem} of {totalStories}</span>
         <div className="flex items-center gap-1">
-          <button className="w-8 h-8 flex items-center justify-center rounded bg-white hover:bg-gray-100" aria-label="Previous">&#60;</button>
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-            <button
-              key={n}
-              className={`w-8 h-8 flex items-center text-white hover:text-black justify-center rounded-md border ${n === 1 ? "bg-gray-800 text-white" : "bg-gray-400 hover:bg-gray-100"}`}
-            >
-              {n}
-            </button>
-          ))}
-          <button className="w-8 h-8 flex items-center justify-center rounded bg-white hover:bg-gray-100" aria-label="Next">&#62;</button>
+          <button 
+            className="w-8 h-8 flex items-center justify-center rounded bg-white hover:bg-gray-100" 
+            aria-label="Previous"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            &#60;
+          </button>
+          {Array.from({ length: Math.min(8, totalPages) }, (_, i) => {
+            const pageNum = i + 1
+            return (
+              <button
+                key={pageNum}
+                className={`w-8 h-8 flex items-center text-white hover:text-black justify-center rounded-md border ${
+                  pageNum === currentPage ? "bg-gray-800 text-white" : "bg-gray-400 hover:bg-gray-100"
+                }`}
+                onClick={() => handlePageChange(pageNum)}
+              >
+                {pageNum}
+              </button>
+            )
+          })}
+          <button 
+            className="w-8 h-8 flex items-center justify-center rounded bg-white hover:bg-gray-100" 
+            aria-label="Next"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            &#62;
+          </button>
         </div>
       </div>
     </section>

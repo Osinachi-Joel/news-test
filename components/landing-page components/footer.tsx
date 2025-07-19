@@ -1,36 +1,11 @@
+"use client"
 import Link from "next/link"
 import { Search, Instagram, Facebook, Twitter, Linkedin } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-
-const footerLinks = {
-  column1: [
-    { name: "Home", href: "/" },
-    { name: "Africa", href: "/africa" },
-    { name: "Politics", href: "/politics" },
-  ],
-  column2: [
-    { name: "Business", href: "/business" },
-    { name: "Sport", href: "/sport" },
-    { name: "Health", href: "/health" },
-  ],
-  column3: [
-    { name: "Tech", href: "/tech" },
-    { name: "Opinion", href: "/opinion" },
-    { name: "Videos", href: "/videos" },
-  ],
-  column4: [
-    { name: "Photos", href: "/photos" },
-    { name: "AGC Archive", href: "/archive" },
-    { name: "Privacy Policy", href: "/privacy" },
-  ],
-  column5: [
-    { name: "About Us", href: "/about" },
-    { name: "Contact Us", href: "/contact" },
-    { name: "Advert Rate", href: "/advert-rate" },
-  ],
-}
+import { useEffect, useState } from "react"
+import { fetchCategories, Category } from "@/lib/categories"
 
 const socialLinks = [
   { name: "Instagram", icon: Instagram, href: "#", color: "hover:text-pink-400" },
@@ -40,6 +15,37 @@ const socialLinks = [
 ]
 
 export default function Footer() {
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const cats = await fetchCategories()
+        setCategories(cats)
+      } catch (error) {
+        console.error('Failed to load categories:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadCategories()
+  }, [])
+
+  // Helper function to get category slug from category name
+  const getCategorySlug = (categoryName: string): string => {
+    return categoryName.toLowerCase().replace(/\s+/g, '-')
+  }
+
+  // Split categories into columns for footer
+  const categoryColumns = categories.reduce((acc, category, index) => {
+    const columnIndex = Math.floor(index / 2) // 2 categories per column
+    if (!acc[columnIndex]) acc[columnIndex] = []
+    acc[columnIndex].push(category)
+    return acc
+  }, [] as Category[][])
+
   return (
     <footer className="bg-[#2d2a2a] text-white">
       {/* Top Section - Logo, Social Media, Search */}
@@ -90,69 +96,72 @@ export default function Footer() {
       {/* Navigation Links */}
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-          {/* Column 1 */}
+          {/* Column 1 - Home and Categories */}
           <div className="space-y-3">
-            {footerLinks.column1.map((link) => (
+            <Link href="/" className="block text-gray-300 hover:text-white transition-colors duration-200">
+              Home
+            </Link>
+            {!loading && categoryColumns[0]?.map((category) => (
               <Link
-                key={link.name}
-                href={link.href}
+                key={category.category_id}
+                href={`/${getCategorySlug(category.category_name)}`}
                 className="block text-gray-300 hover:text-white transition-colors duration-200"
               >
-                {link.name}
+                {category.category_name}
               </Link>
             ))}
           </div>
 
-          {/* Column 2 */}
+          {/* Column 2 - More Categories */}
           <div className="space-y-3">
-            {footerLinks.column2.map((link) => (
+            {!loading && categoryColumns[1]?.map((category) => (
               <Link
-                key={link.name}
-                href={link.href}
+                key={category.category_id}
+                href={`/${getCategorySlug(category.category_name)}`}
                 className="block text-gray-300 hover:text-white transition-colors duration-200"
               >
-                {link.name}
+                {category.category_name}
               </Link>
             ))}
           </div>
 
-          {/* Column 3 */}
+          {/* Column 3 - Media */}
           <div className="space-y-3">
-            {footerLinks.column3.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="block text-gray-300 hover:text-white transition-colors duration-200"
-              >
-                {link.name}
-              </Link>
-            ))}
+            <Link href="/videos" className="block text-gray-300 hover:text-white transition-colors duration-200">
+              Videos
+            </Link>
+            <Link href="/photos" className="block text-gray-300 hover:text-white transition-colors duration-200">
+              Photos
+            </Link>
+            <Link href="/audio" className="block text-gray-300 hover:text-white transition-colors duration-200">
+              Audio
+            </Link>
           </div>
 
-          {/* Column 4 */}
+          {/* Column 4 - Company */}
           <div className="space-y-3">
-            {footerLinks.column4.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="block text-gray-300 hover:text-white transition-colors duration-200"
-              >
-                {link.name}
-              </Link>
-            ))}
+            <Link href="/about" className="block text-gray-300 hover:text-white transition-colors duration-200">
+              About Us
+            </Link>
+            <Link href="/contact" className="block text-gray-300 hover:text-white transition-colors duration-200">
+              Contact Us
+            </Link>
+            <Link href="/advert-rate" className="block text-gray-300 hover:text-white transition-colors duration-200">
+              Advert Rate
+            </Link>
           </div>
 
-          {/* Column 5 */}
+          {/* Column 5 - Legal */}
           <div className="space-y-3">
-            {footerLinks.column5.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="block text-gray-300 hover:text-white transition-colors duration-200"
-              >
-                {link.name}
-              </Link>
-            ))}
+            <Link href="/archive" className="block text-gray-300 hover:text-white transition-colors duration-200">
+              AGC Archive
+            </Link>
+            <Link href="/privacy" className="block text-gray-300 hover:text-white transition-colors duration-200">
+              Privacy Policy
+            </Link>
+            <Link href="/vip" className="block text-gray-300 hover:text-white transition-colors duration-200">
+              AGC VIP
+            </Link>
           </div>
         </div>
       </div>

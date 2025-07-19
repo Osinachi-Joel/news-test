@@ -1,5 +1,9 @@
+"use client"
 import Image from "next/image"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { getCategoryId, fetchCategoryStories } from "@/lib/categories"
+import { Spinner } from "../ui/spinner"
 
 interface Story {
   id: string
@@ -9,38 +13,70 @@ interface Story {
   slug: string
 }
 
-const stories: Story[] = [
-  {
-    id: "1",
-    title: "Putin promises grains, debt write-off as Russia seeks Africa allies",
-    category: "LATEST TODAY",
-    image: "/placeholder.svg?height=400&width=600",
-    slug: "putin-promises-grains-debt-writeoff",
-  },
-  {
-    id: "2",
-    title: "Tinubu Mourns Actors, John Okafor and Quadri Oyebamiji",
-    category: "NEWS TODAY",
-    image: "/placeholder.svg?height=300&width=400",
-    slug: "tinubu-mourns-actors",
-  },
-  {
-    id: "3",
-    title: "Tinubu Mourns Actors, John Okafor and Quadri Oyebamiji",
-    category: "NEWS TODAY",
-    image: "/placeholder.svg?height=200&width=400",
-    slug: "tinubu-mourns-actors-2",
-  },
-  {
-    id: "4",
-    title: "Tinubu Mourns Actors, John Okafor and Quadri Oyebamiji",
-    category: "NEWS TODAY",
-    image: "/placeholder.svg?height=200&width=400",
-    slug: "tinubu-mourns-actors-3",
-  },
-]
-
 export default function LatestSection({ section }: { section: string }) {
+  const [stories, setStories] = useState<Story[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function fetchStories() {
+      setLoading(true)
+      setError(null)
+      
+      const categoryId = getCategoryId(section)
+      if (!categoryId) {
+        setError(`Category not found for section: ${section}`)
+        setLoading(false)
+        return
+      }
+
+      try {
+        const response = await fetchCategoryStories(categoryId, 1, 4)
+        if (!response) {
+          throw new Error("Failed to fetch stories")
+        }
+
+        const apiStories = response.data.data.map((story) => ({
+          id: story.id.toString(),
+          title: story.title,
+          category: story.category.category_name,
+          image: story.banner_image || "/placeholder.svg?height=400&width=600",
+          slug: story.id.toString(),
+        }))
+
+        setStories(apiStories)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load stories")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchStories()
+  }, [section])
+
+  if (loading) {
+    return (
+      <section className="container bg-white mx-auto px-4 py-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">Latest in {section}</h2>
+        <div className="flex justify-center items-center py-12">
+          <Spinner />
+        </div>
+      </section>
+    )
+  }
+
+  if (error || stories.length === 0) {
+    return (
+      <section className="container bg-white mx-auto px-4 py-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">Latest in {section}</h2>
+        <div className="text-center py-8 text-gray-500">
+          {error || "No stories available."}
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="container bg-white mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">Latest in {section}</h2>

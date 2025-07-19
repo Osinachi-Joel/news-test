@@ -4,9 +4,34 @@ import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
+import { fetchCategories, Category } from "@/lib/categories"
 
 export default function MainNavbar() {
   const pathname = usePathname();
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const cats = await fetchCategories()
+        setCategories(cats)
+      } catch (error) {
+        console.error('Failed to load categories:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadCategories()
+  }, [])
+
+  // Helper function to get category slug from category name
+  const getCategorySlug = (categoryName: string): string => {
+    return categoryName.toLowerCase().replace(/\s+/g, '-')
+  }
+
   return (
     <nav className="bg-[#1b1b1b] text-white">
       <div className="mx-auto px-4">
@@ -20,27 +45,15 @@ export default function MainNavbar() {
               <Link href="/" className={`${pathname === '/' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
                 Home
               </Link>
-              <Link href="/africa" className={`${pathname === '/africa' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
-                Africa
-              </Link>
-              <Link href="/politics" className={`${pathname === '/politics' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
-                Politics
-              </Link>
-              <Link href="/business" className={`${pathname === '/business' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
-                Business
-              </Link>
-              <Link href="/sport" className={`${pathname === '/sport' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
-                Sport
-              </Link>
-              <Link href="/health" className={`${pathname === '/health' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
-                Health
-              </Link>
-              <Link href="/tech" className={`${pathname === '/tech' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
-                Tech
-              </Link>
-              <Link href="/opinion" className={`${pathname === '/opinion' ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}>
-                Opinion
-              </Link>
+              {!loading && categories.map((category) => (
+                <Link 
+                  key={category.category_id}
+                  href={`/${getCategorySlug(category.category_name)}`} 
+                  className={`${pathname === `/${getCategorySlug(category.category_name)}` ? 'text-pink-400 border-b-2 border-pink-400 pb-4' : 'hover:text-pink-400 pb-4'}`}
+                >
+                  {category.category_name}
+                </Link>
+              ))}
             </div>
           </div>
 
