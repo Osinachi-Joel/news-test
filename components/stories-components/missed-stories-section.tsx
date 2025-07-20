@@ -1,9 +1,6 @@
 "use client"
 import Link from "next/link"
 import { ArrowRight, ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import Image from "next/image"
 import { useEffect, useState } from "react"
 import { Spinner } from "../ui/spinner"
 
@@ -157,49 +154,6 @@ export default function MissedStoriesSection() {
             </Link>
           </div>
         ))}
-      </div>
-
-      {/* Newsletter and Advertisement Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Newsletter Signup */}
-        <div className="w">
-          <div className="flex items-start space-x-4">
-            <div className="flex-1">
-              <div className="text-gray-800 font-medium mb-2 text-sm flex flex-row">
-              <div className="w-10 h-10 bg-gray-100 rounded-full flex mr-2">
-                <Image
-                  src="/email.svg"
-                  alt="Betano Advertisement"
-                  width={100}
-                  height={100}
-                />
-                </div>
-                Get the latest news and stories from <br /> around Africa directly into
-                your inbox daily.
-              </div>
-              <div className="space-y-3">
-                <Input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="w-3/4"
-                />
-                <Button className="w-3/4 bg-pink-600 hover:bg-pink-700 text-white">
-                  Get Me In
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Betano Advertisement */}
-        <div className="rounded-lg p-6 text-white overflow-hidden">
-          <Image
-            src="/betads.svg"
-            alt="Betano Advertisement"
-            width={640}
-            height={360}
-          />
-        </div>
       </div>
     </section>
   );

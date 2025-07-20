@@ -108,9 +108,10 @@ export default function MainStory() {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 p-4 max-w-6xl mx-auto bg-white">
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex flex-col lg:flex-row gap-8 bg-white w-full">
       {/* Main Content */}
-      <main className="flex-1 max-w-2xl">
+      <main className="flex-1 lg:flex-3">
         <div className="mb-4 flex items-center text-xs text-gray-500 gap-2">
           <span className="border px-2 py-0.5 rounded-full">World News</span>
           <button className="ml-2 px-2 py-0.5 border rounded text-blue-600 hover:bg-blue-50">+ Share</button>
@@ -199,7 +200,7 @@ export default function MainStory() {
       </main>
       
       {/* Sidebar */}
-      <aside className="w-full lg:w-80 flex-shrink-0 space-y-6">
+      <aside className="w-full lg:w-96 flex-shrink-0 space-y-6 lg:ml-8">
         <section className="bg-gray-50 rounded p-4 mb-4">
           <h2 className="font-semibold text-sm mb-3 text-gray-700">TOP STORIES</h2>
           {topStoriesLoading ? (
@@ -242,6 +243,7 @@ export default function MainStory() {
           />
         </div>
       </aside>
+    </div>
     </div>
   );
 }

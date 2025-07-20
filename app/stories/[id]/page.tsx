@@ -3,6 +3,8 @@ import AdvertisementBanner from "@/components/section-components/ad-banner"
 import MainNavbar from "@/components/landing-page components/main-navbar"
 import Footer from "@/components/landing-page components/footer"
 import MainStory from "@/components/stories-components/main-story"
+import MissedStoriesSection from "@/components/stories-components/missed-stories-section"
+import AlsoReading from "@/components/stories-components/also-reading"
 
 export default function StoriesPage() {
   return (
@@ -11,6 +13,8 @@ export default function StoriesPage() {
       <AdvertisementBanner />
       <MainNavbar />
       <MainStory />
+      <AlsoReading />
+      <MissedStoriesSection />
       <Footer />
     </>
   )
