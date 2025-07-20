@@ -6,12 +6,12 @@ import Footer from "@/components/landing-page components/footer"
 import LatestSection from "@/components/section-components/latest-section"
 import OtherStories from "@/components/section-components/other-stories"
 
-interface SectionPageProps {
-  params: { section: string }
+type Props = {
+  params: Promise<{ section: string }>
 }
 
-export default function SectionPage({ params }: SectionPageProps) {
-  const { section } = params
+export default async function SectionPage({ params }: Props) {
+  const { section } = await params
   if (section === "home") {
     redirect("/")
   }
