@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { Spinner } from "../ui/spinner"
+import Link from "next/link"
 
 export default function TopStories() {
   const [stories, setStories] = useState<{
@@ -90,7 +91,7 @@ export default function TopStories() {
       <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">TOP STORIES</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Main Story */}
-        <div className="relative group cursor-pointer md:row-span-2">
+        <Link href={`/stories/${stories[0].id}`} className="relative group cursor-pointer md:row-span-2">
           <div className="relative h-76 rounded-xs overflow-hidden">
             <Image
               src={stories[0].image || "/placeholder.svg"}
@@ -106,11 +107,11 @@ export default function TopStories() {
               <h3 className="text-white text-lg md:text-xl font-bold leading-tight mb-1">{stories[0].title}</h3>
             </div>
           </div>
-        </div>
+        </Link>
         {/* Side Stories Grid */}
         <div className="grid grid-cols-2 gap-4">
           {stories.slice(1, 4).map((story, idx) => (
-            <div key={story.id + idx} className={`relative group cursor-pointer ${idx === 2 ? 'col-span-2' : ''}`}>
+            <Link key={story.id + idx} href={`/stories/${story.id}`} className={`relative group cursor-pointer ${idx === 2 ? 'col-span-2' : ''}`}>
               <div className={`relative h-32 md:h-36 rounded-xs overflow-hidden w-full`}>
                 <Image
                   src={story.image || "/placeholder.svg"}
@@ -126,7 +127,7 @@ export default function TopStories() {
                   <h3 className="text-white text-sm md:text-base font-bold leading-tight">{story.title}</h3>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
