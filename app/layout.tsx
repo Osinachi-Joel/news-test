@@ -1,6 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
+import { SearchProvider } from "@/lib/search-context"
+import SearchResults from "@/components/ui/search-results"
 
 export const metadata: Metadata = {
   title: "AGC NewsNet - Latest News from Africa and Beyond",
@@ -15,7 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SearchProvider>
+          {children}
+          <SearchResults />
+        </SearchProvider>
+      </body>
     </html>
   )
 }

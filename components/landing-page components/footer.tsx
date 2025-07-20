@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { fetchCategories, Category } from "@/lib/categories"
+import { useSearch } from "@/lib/search-context"
 
 const socialLinks = [
   { name: "Instagram", icon: Instagram, href: "#", color: "hover:text-pink-400" },
@@ -17,6 +18,7 @@ const socialLinks = [
 export default function Footer() {
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
+  const { setSearchQuery } = useSearch()
 
   useEffect(() => {
     async function loadCategories() {
@@ -63,6 +65,7 @@ export default function Footer() {
                 type="text"
                 placeholder="Search AGC Newsnet"
                 className="w-full bg-white text-gray-900 border-0 pr-12 h-10"
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <Button
                 size="sm"
