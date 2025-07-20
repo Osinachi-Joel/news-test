@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { ArrowRight, ArrowLeft } from "lucide-react"
 import { useEffect, useState } from "react"
-import { Spinner } from "../ui/spinner"
+import { Skeleton } from "../ui/skeleton"
 
 interface MissedStory {
   id: number
@@ -73,8 +73,22 @@ export default function MissedStoriesSection() {
             STORIES YOU MAY HAVE MISSED
           </h2>
         </div>
-        <div className="flex justify-center items-center w-full h-full py-12">
-          <Spinner />
+        {/* Skeleton Loader */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 w-full">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="group cursor-pointer">
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3">
+                  <Skeleton className="w-3 h-3 rounded-sm mt-1 flex-shrink-0" variant="circle" />
+                  <Skeleton className="h-6 w-3/4" variant="text" />
+                </div>
+                <div className="flex items-center space-x-4 text-sm text-gray-500 ml-6">
+                  <Skeleton className="h-4 w-1/4" variant="text" />
+                  <Skeleton className="h-4 w-1/4" variant="text" />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     )

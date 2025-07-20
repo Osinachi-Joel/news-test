@@ -2,7 +2,7 @@ import Image from "next/image"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { Spinner } from "../ui/spinner"
+import { Skeleton } from "../ui/skeleton"
 
 interface NewsItem {
   id: number
@@ -68,8 +68,21 @@ export default function LatestNews() {
           <span className="w-1.5 h-6 bg-purple-900 mr-3"></span>
           <h2 className="text-lg md:text-xl font-bold text-gray-900 tracking-wide">LATEST NEWS</h2>
         </div>
-        <div className="flex justify-center items-center w-full h-full py-12">
-          <Spinner />
+        {/* Skeleton Loader */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-2 w-full">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="w-[240px] h-[300px] flex-shrink-0 rounded-md bg-white shadow-md relative">
+              <Skeleton className="w-full h-full rounded-md" />
+              <div className="absolute bottom-4 left-4 right-4">
+                <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* Skeleton Ads */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-20 w-full">
+          <Skeleton className="w-full h-24" />
+          <Skeleton className="w-full h-24" />
         </div>
       </section>
     )

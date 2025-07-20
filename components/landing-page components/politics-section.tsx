@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { useEffect, useState } from "react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface SidebarStory {
   id: string
@@ -60,7 +61,14 @@ export default function PoliticsSection() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:divide-x lg:divide-gray-300">
         {/* Main Featured Article */}
         <div className="lg:col-span-2">
-          {loading && <div className="text-gray-500">Loading...</div>}
+          {loading && (
+            <div className="group cursor-pointer p-4">
+              <div className="relative h-64 md:h-80 rounded-xs overflow-hidden mb-4">
+                <Skeleton className="w-full h-full" />
+              </div>
+              <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
+            </div>
+          )}
           {error && <div className="text-red-500">{error}</div>}
           {!loading && !error && sidebarStories.length > 0 && (
             <div className="group cursor-pointer p-4">
@@ -87,7 +95,19 @@ export default function PoliticsSection() {
         {/* Sidebar Stories */}
         <div className="lg:col-span-1">
           <div className="">
-            {loading && <div className="text-gray-500">Loading...</div>}
+            {loading && (
+              [...Array(5)].map((_, i) => (
+                <div key={i} className="group">
+                  <div className="flex items-start space-x-3 hover:bg-gray-50 p-1 rounded transition-colors duration-200">
+                    <Skeleton className="w-3 h-3 rounded-xs mt-2 flex-shrink-0" variant="circle" />
+                    <div className="flex-1">
+                      <Skeleton className="h-4 w-full" variant="text" />
+                    </div>
+                    <Skeleton className="w-20 h-10" />
+                  </div>
+                </div>
+              ))
+            )}
             {error && <div className="text-red-500">{error}</div>}
             {!loading && !error && sidebarStories.slice(1, 6).map((story) => (
               <div key={story.id} className="group">

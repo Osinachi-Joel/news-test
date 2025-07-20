@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { useEffect, useState } from "react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 // Category interface
 interface Category {
@@ -94,8 +95,50 @@ export default function FeaturedStories() {
           <h2 className="text-2xl font-bold text-gray-800">FEATURED STORIES</h2>
           <ChevronRight className="w-5 h-5 text-gray-600 ml-2" />
         </div>
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
+        {/* Skeleton Loader */}
+        <div className="grid grid-cols-1 lg:grid-cols-8 gap-8 w-full">
+          {/* Left Column Skeleton */}
+          <div className="lg:col-span-3 space-y-6">
+            <div className="group cursor-pointer">
+              <div className="relative h-60 rounded-xs overflow-hidden mb-3">
+                <Skeleton className="w-full h-full" />
+              </div>
+              <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
+              <div className="flex items-center space-x-4 text-sm mb-4">
+                <Skeleton className="h-4 w-1/4" variant="text" />
+                <Skeleton className="h-4 w-1/4" variant="text" />
+              </div>
+            </div>
+            <div className="space-y-3">
+              {[...Array(5)].map((_, i) => (
+                <Skeleton key={i} className="h-4 w-full" variant="text" />
+              ))}
+            </div>
+          </div>
+          {/* Middle Column Skeleton */}
+          <div className="lg:col-span-3 space-y-6">
+            <div className="group cursor-pointer">
+              <div className="relative h-60 rounded-xs overflow-hidden mb-3">
+                <Skeleton className="w-full h-full" />
+              </div>
+              <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
+              <div className="flex items-center space-x-4 text-sm mb-4">
+                <Skeleton className="h-4 w-1/4" variant="text" />
+                <Skeleton className="h-4 w-1/4" variant="text" />
+              </div>
+            </div>
+            <div className="space-y-3">
+              {[...Array(5)].map((_, i) => (
+                <Skeleton key={i} className="h-4 w-full" variant="text" />
+              ))}
+            </div>
+          </div>
+          {/* Right Column Skeleton (Ads) */}
+          <div className="lg:col-span-2 space-y-4">
+            <Skeleton className="h-6 w-1/2 mb-2" variant="text" />
+            <Skeleton className="w-full h-44 mb-4" />
+            <Skeleton className="w-full h-44" />
+          </div>
         </div>
       </section>
     )

@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { Spinner } from "../ui/spinner"
+import { Skeleton } from "@/components/ui/skeleton"
 import Link from "next/link"
 
 export default function TopStories() {
@@ -71,8 +71,22 @@ export default function TopStories() {
     return (
       <section className="container bg-white mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[300px]">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">TOP STORIES</h2>
-        <div className="flex justify-center items-center w-full h-full py-12">
-          <Spinner />
+        {/* Skeleton Loader */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+          {/* Main Story Skeleton */}
+          <div className="relative group cursor-pointer md:row-span-2">
+            <Skeleton className="w-full h-76 mb-2" />
+            <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
+          </div>
+          {/* Side Stories Skeleton */}
+          <div className="grid grid-cols-2 gap-4">
+            {[...Array(3)].map((_, idx) => (
+              <div key={idx} className="relative group cursor-pointer">
+                <Skeleton className="w-full h-32 md:h-36 mb-2" />
+                <Skeleton className="h-4 w-3/4 mb-1" variant="text" />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     )

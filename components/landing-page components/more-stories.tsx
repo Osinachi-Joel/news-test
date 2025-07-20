@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface ApiStory {
   id: number
@@ -157,7 +158,11 @@ export default function MoreStories() {
               </Link>
             </div>
           ) : loading ? (
-            <div className="h-96 flex items-center justify-center">Loading...</div>
+            <div className="h-96 flex flex-col gap-4 items-center justify-center">
+              <Skeleton className="w-full h-80 mb-4" />
+              <Skeleton className="h-8 w-3/4 mb-2" variant="text" />
+              <Skeleton className="h-6 w-1/2" variant="text" />
+            </div>
           ) : error ? (
             <div className="h-96 flex items-center justify-center text-red-500">{error}</div>
           ) : null}
@@ -171,18 +176,29 @@ export default function MoreStories() {
               style={{ maxHeight: "500px", overflow: "auto" }}
               className="space-y-2"
             >
-              {currentStories.map((story, idx) => (
-                <div key={`${story.story.id}-${startIdx + idx}`} className="group">
-                  <Link href={`/stories/${story.story.id}`}>
-                    <div className="flex items-start space-x-3 hover:bg-gray-50 p-2 rounded transition-colors duration-200">
-                      <div className="w-3 h-3 bg-red-500 rounded mt-2 flex-shrink-0"></div>
-                      <p className="text-gray-800 text-sm leading-relaxed group-hover:text-pink-600 transition-colors duration-200">
-                        {story.story.title}
-                      </p>
+              {loading ? (
+                [...Array(5)].map((_, i) => (
+                  <div key={i} className="group">
+                    <div className="flex items-start space-x-3 p-2">
+                      <Skeleton className="w-3 h-3 rounded mt-2 flex-shrink-0" variant="circle" />
+                      <Skeleton className="h-4 w-3/4" variant="text" />
                     </div>
-                  </Link>
-                </div>
-              ))}
+                  </div>
+                ))
+              ) : (
+                currentStories.map((story, idx) => (
+                  <div key={`${story.story.id}-${startIdx + idx}`} className="group">
+                    <Link href={`/stories/${story.story.id}`}>
+                      <div className="flex items-start space-x-3 hover:bg-gray-50 p-2 rounded transition-colors duration-200">
+                        <div className="w-3 h-3 bg-red-500 rounded mt-2 flex-shrink-0"></div>
+                        <p className="text-gray-800 text-sm leading-relaxed group-hover:text-pink-600 transition-colors duration-200">
+                          {story.story.title}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                ))
+              )}
               {loading && <div className="text-center py-2">Loading...</div>}
               {error && <div className="text-red-500 mt-2">{error}</div>}
             </div>

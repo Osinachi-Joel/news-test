@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { getCategoryId, fetchCategoryStories } from "@/lib/categories"
-import { Spinner } from "../ui/spinner"
+import { Skeleton } from "../ui/skeleton"
 
 interface Story {
   id: string
@@ -59,8 +59,22 @@ export default function LatestSection({ section }: { section: string }) {
     return (
       <section className="container bg-white mx-auto px-4 py-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">Latest in {section}</h2>
-        <div className="flex justify-center items-center py-12">
-          <Spinner />
+        {/* Skeleton Loader */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Main Story Skeleton */}
+          <div className="relative group cursor-pointer md:row-span-2">
+            <Skeleton className="w-full h-76 mb-2" />
+            <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
+          </div>
+          {/* Side Stories Skeleton */}
+          <div className="grid grid-cols-2 gap-4">
+            {[...Array(3)].map((_, idx) => (
+              <div key={idx} className="relative group cursor-pointer">
+                <Skeleton className="w-full h-32 md:h-36 mb-2" />
+                <Skeleton className="h-4 w-3/4 mb-1" variant="text" />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     )

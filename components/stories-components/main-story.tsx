@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface StoryData {
   title: string;
@@ -101,7 +102,33 @@ export default function MainStory() {
   }, []);
 
   if (loading) {
-    return <div className="p-8 text-center text-gray-500">Loading story...</div>;
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col lg:flex-row gap-8 bg-white w-full">
+          {/* Main Content Skeleton */}
+          <main className="flex-1 lg:flex-3 space-y-4">
+            <Skeleton className="h-6 w-1/4 mb-2" variant="text" />
+            <Skeleton className="h-10 w-3/4 mb-4" variant="text" />
+            <Skeleton className="h-4 w-1/2 mb-4" variant="text" />
+            <Skeleton className="w-full h-80 mb-4" />
+            <Skeleton className="h-4 w-full mb-2" variant="text" />
+            <Skeleton className="h-32 w-full mb-2" />
+            <Skeleton className="h-32 w-full mb-2" />
+          </main>
+          {/* Sidebar Skeleton */}
+          <aside className="w-full lg:w-96 flex-shrink-0 space-y-6 lg:ml-8">
+            <div className="bg-gray-50 rounded p-4 mb-4">
+              <Skeleton className="h-6 w-1/2 mb-3" variant="text" />
+              {[...Array(5)].map((_, i) => (
+                <Skeleton key={i} className="h-4 w-full mb-2" variant="text" />
+              ))}
+            </div>
+            <Skeleton className="w-full h-40 mb-3" />
+            <Skeleton className="w-full h-40" />
+          </aside>
+        </div>
+      </div>
+    )
   }
   if (error || !story) {
     return <div className="p-8 text-center text-red-500">{error || "Story not found."}</div>;
