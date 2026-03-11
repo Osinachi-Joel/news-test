@@ -85,7 +85,8 @@ export default function NewsPicturesSection() {
         const data: ApiResponse = await response.json()
         
         // Randomize the order of the news
-        const shuffledData = [...data.data.data].sort(() => Math.random() - 0.5)
+        const filteredData = (data.data.data || []).filter(item => item && item.story)
+        const shuffledData = [...filteredData].sort(() => Math.random() - 0.5)
         setEditorPicks(shuffledData)
       } catch (error) {
         console.error('Error fetching editor picks:', error)

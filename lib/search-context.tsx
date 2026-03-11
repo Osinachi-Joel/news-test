@@ -71,16 +71,16 @@ export function SearchProvider({ children }: { children: ReactNode }) {
             }
           }> = []
           
-          if (endpoint.includes('editor-picks')) {
-            stories = data?.data?.data || []
-          } else if (endpoint.includes('top-stories')) {
-            stories = (data?.data?.data || []).map((item: { story: { id: number; title: string; subtitle?: string; description?: string; author?: string; banner_image?: string; category?: { category_name?: string }; created_at?: string } }) => item.story)
+          if (endpoint.includes('editor-picks') || endpoint.includes('top-stories')) {
+            stories = (data?.data?.data || [])
+              .filter((item: any) => item && item.story)
+              .map((item: any) => item.story)
           } else {
-            stories = data?.data?.data || []
+            stories = (data?.data?.data || []).filter((item: any) => item)
           }
 
           stories.forEach((story) => {
-            if (story.id && !seenIds.has(story.id)) {
+            if (story && story.id && !seenIds.has(story.id)) {
               seenIds.add(story.id)
               allStories.push({
                 id: story.id,

@@ -33,13 +33,15 @@ export default function AlsoReading() {
           category?: { category_name?: string }
           banner_image?: string
         }
-        const apiNews = (data?.data?.data || []).map((item: ApiNewsItem) => ({
-          id: item.id,
-          title: item.title,
-          category: item.category?.category_name || "",
-          image: item.banner_image || "/placeholder.svg?height=300&width=400",
-          slug: item.id.toString(),
-        }))
+        const apiNews = (data?.data?.data || [])
+          .filter((item: ApiNewsItem) => item)
+          .map((item: ApiNewsItem) => ({
+            id: item.id,
+            title: item.title,
+            category: item.category?.category_name || "",
+            image: item.banner_image || "/placeholder.svg?height=300&width=400",
+            slug: item.id.toString(),
+          }))
         setNews(apiNews)
       } catch {
         setError("Failed to load latest news.")

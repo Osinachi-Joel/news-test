@@ -76,7 +76,7 @@ export default function FeaturedStories() {
       try {
         const response = await fetch('https://api.agcnewsnet.com/api/general/editor-picks?page=1&per_page=15')
         const data: ApiResponse = await response.json()
-        setStories(data.data.data)
+        setStories((data.data.data || []).filter(item => item && item.story))
       } catch (error) {
         console.error('Error fetching stories:', error)
       } finally {

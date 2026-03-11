@@ -38,7 +38,7 @@ export default function MoreStories() {
       const res = await fetch(`${API_URL}${pageNum}&per_page=${API_PER_PAGE}`)
       if (!res.ok) throw new Error("Failed to fetch stories")
       const data = await res.json()
-      const newStories: ApiStory[] = data.data.data
+      const newStories: ApiStory[] = (data.data.data || []).filter((item: ApiStory) => item && item.story)
       if (pageNum === 1) {
         setFeatured(newStories[0])
         setAllStories(newStories.slice(1))

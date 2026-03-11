@@ -33,7 +33,7 @@ export default function SportSection() {
           banner_image?: string
         }
         // Map API data to SidebarStory[] (first 6 only)
-        const stories = (data?.data?.data as ApiStory[] || []).slice(0, 6).map((story) => ({
+        const stories = (data?.data?.data as ApiStory[] || []).filter(item => item).slice(0, 6).map((story) => ({
           id: String(story.id),
           title: story.title,
           image: story.banner_image || "/placeholder.svg?height=80&width=80",

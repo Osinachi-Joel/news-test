@@ -43,12 +43,14 @@ export default function TopStories() {
             banner_image: string
           }
         }
-        const apiStories = (data?.data?.data || []).map((item: ApiStory) => ({
-          id: item.story.id,
-          title: item.story.title,
-          subtitle: item.story.subtitle,
-          image: item.story.banner_image,
-        }))
+        const apiStories = (data?.data?.data || [])
+          .filter((item: ApiStory) => item.story)
+          .map((item: ApiStory) => ({
+            id: item.story.id,
+            title: item.story.title,
+            subtitle: item.story.subtitle,
+            image: item.story.banner_image,
+          }))
         // If less than 4, repeat the first to fill the grid (to match design)
         let filledStories = apiStories
         if (apiStories.length > 0 && apiStories.length < 4) {

@@ -83,7 +83,7 @@ export default function NewsVideosSection() {
       try {
         const response = await fetch('https://api.agcnewsnet.com/api/general/editor-picks?page=1&per_page=15')
         const data: ApiResponse = await response.json()
-        setEditorPicks(data.data.data)
+        setEditorPicks((data.data.data || []).filter(item => item && item.story))
       } catch (error) {
         console.error('Error fetching editor picks:', error)
       } finally {

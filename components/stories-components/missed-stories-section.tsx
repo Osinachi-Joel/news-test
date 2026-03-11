@@ -34,13 +34,15 @@ export default function MissedStoriesSection() {
           created_at: string
         }
         
-        const apiStories = (data?.data?.data || []).map((item: ApiMissedStory) => ({
-          id: item.id,
-          title: item.title,
-          category: item.category?.category_name || "",
-          created_at: item.created_at,
-          slug: item.id.toString(),
-        }))
+        const apiStories = (data?.data?.data || [])
+          .filter((item: ApiMissedStory) => item)
+          .map((item: ApiMissedStory) => ({
+            id: item.id,
+            title: item.title,
+            category: item.category?.category_name || "",
+            created_at: item.created_at,
+            slug: item.id.toString(),
+          }))
         
         setMissedStories(apiStories)
         setTotalPages(Math.ceil(apiStories.length / 4)) // Show 4 stories per page

@@ -37,7 +37,7 @@ export default function MissedStoriesSection() {
           created_at: string
         }
         
-        const apiStories = (data?.data?.data || []).map((item: ApiMissedStory) => ({
+        const apiStories = (data?.data?.data || []).filter((item: any) => item).map((item: ApiMissedStory) => ({
           id: item.id,
           title: item.title,
           category: item.category?.category_name || "",

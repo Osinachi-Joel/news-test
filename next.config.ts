@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   /* config options here */
+  reactCompiler: true,
   images: {
     domains: [
       'agc-storage.s3.eu-north-1.amazonaws.com',

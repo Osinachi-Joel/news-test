@@ -75,12 +75,14 @@ export default function MainStory() {
             banner_image: string;
           };
         };
-        const apiStories = (data?.data?.data || []).map((item: ApiStory) => ({
-          id: item.story.id,
-          title: item.story.title,
-          subtitle: item.story.subtitle,
-          image: item.story.banner_image,
-        }));
+        const apiStories = (data?.data?.data || [])
+          .filter((item: ApiStory) => item && item.story)
+          .map((item: ApiStory) => ({
+            id: item.story.id,
+            title: item.story.title,
+            subtitle: item.story.subtitle,
+            image: item.story.banner_image,
+          }));
         
         // Ensure we always have at least 5 stories by repeating if necessary
         let filledStories = apiStories;

@@ -32,7 +32,7 @@ export default function LatestNews() {
           category?: { category_name?: string }
           banner_image?: string
         }
-        const apiNews = (data?.data?.data || []).map((item: ApiNewsItem) => ({
+        const apiNews = (data?.data?.data || []).filter((item: any) => item).map((item: ApiNewsItem) => ({
           id: item.id,
           title: item.title,
           category: item.category?.category_name || "",
