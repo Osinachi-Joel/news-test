@@ -92,47 +92,47 @@ export default function LatestSection({ section }: { section: string }) {
   }
 
   return (
-    <section className="container bg-white mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">Latest in {section}</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <section className="container bg-white mx-auto px-4 py-12">
+      <h2 className="text-2xl font-bold text-gray-800 mb-8 tracking-wide">Latest in {section}</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Main Story */}
         <div className="relative group cursor-pointer md:row-span-2">
           <Link href={`/stories/${stories[0].id}`}>
-            <div className="relative h-76 rounded-xs overflow-hidden">
+            <div className="relative h-80 rounded-lg overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-300">
               <Image
                 src={stories[0].image || "/placeholder.svg"}
                 alt={stories[0].title}
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-4">
-                <span className="inline-block bg-pink-600 text-white text-xs px-2 py-1 rounded mb-2 uppercase tracking-wide">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <span className="inline-block bg-pink-600 text-white text-xs px-3 py-1 rounded-full mb-3 uppercase tracking-wider font-semibold">
                   {stories[0].category}
                 </span>
-                <h3 className="text-white text-lg md:text-xl font-bold leading-tight mb-1">{stories[0].title}</h3>
+                <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-2 drop-shadow-sm">{stories[0].title}</h3>
               </div>
             </div>
           </Link>
         </div>
         {/* Side Stories Grid */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-6">
           {stories.slice(1).map((story, idx) => (
             <div key={story.id} className={`relative group cursor-pointer ${idx === 2 ? 'col-span-2' : ''}`}>
               <Link href={`/stories/${story.id}`}>
-                <div className={`relative h-32 md:h-36 rounded-xs overflow-hidden w-full`}>
+                <div className={`relative h-40 md:h-44 rounded-lg overflow-hidden w-full shadow-sm group-hover:shadow-md transition-all duration-300`}>
                   <Image
                     src={story.image || "/placeholder.svg"}
                     alt={story.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <span className="inline-block bg-pink-600 text-white text-xs px-2 py-1 rounded mb-1 uppercase tracking-wide">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <span className="inline-block bg-pink-600 text-white text-[10px] px-2 py-0.5 rounded-full mb-2 uppercase tracking-wide font-semibold">
                       {story.category}
                     </span>
-                    <h3 className="text-white text-sm md:text-base font-bold leading-tight">{story.title}</h3>
+                    <h3 className="text-white text-sm md:text-base font-bold leading-tight line-clamp-2">{story.title}</h3>
                   </div>
                 </div>
               </Link>

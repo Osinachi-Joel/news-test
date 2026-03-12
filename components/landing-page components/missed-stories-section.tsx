@@ -1,3 +1,4 @@
+"use client";
 "use client"
 import Link from "next/link"
 import { ArrowRight, ArrowLeft } from "lucide-react"
@@ -151,18 +152,18 @@ export default function MissedStoriesSection() {
       </div>
 
       {/* Stories Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
         {visibleStories.map((story) => (
           <div key={story.id} className="group cursor-pointer">
             <Link href={`/stories/${story.slug}`}>
-              <div className="space-y-3">
+              <div className="space-y-4 p-4 rounded-lg hover:bg-gray-50 hover:shadow-md transition-all duration-300">
                 <div className="flex items-start space-x-3">
-                  <div className="w-3 h-3 bg-gray-800 rounded-sm mt-1 flex-shrink-0"></div>
+                  <div className="w-2 h-2 bg-gray-800 rounded-full mt-2 flex-shrink-0"></div>
                   <h3 className="text-gray-800 font-semibold leading-tight group-hover:text-purple-600 transition-colors duration-200">
                     {story.title}
                   </h3>
                 </div>
-                <div className="flex items-center space-x-4 text-sm text-gray-500 ml-6">
+                <div className="flex items-center space-x-4 text-sm text-gray-500 ml-5">
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
                     <span>{new Date(story.created_at).toLocaleDateString('en-US', { 
@@ -183,30 +184,29 @@ export default function MissedStoriesSection() {
       </div>
 
       {/* Newsletter and Advertisement Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Newsletter Signup */}
-        <div className="w">
+        <div className="bg-gray-50 p-8 rounded-lg shadow-sm border border-gray-100">
           <div className="flex items-start space-x-4">
             <div className="flex-1">
-              <div className="text-gray-800 font-medium mb-2 text-sm flex flex-row">
-              <div className="w-10 h-10 bg-gray-100 rounded-full flex mr-2">
-                <Image
-                  src="/email.svg"
-                  alt="Betano Advertisement"
-                  width={100}
-                  height={100}
-                />
+              <div className="text-gray-800 font-medium mb-6 text-base flex items-center">
+                <div className="w-12 h-12 bg-white shadow-sm rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                  <Image
+                    src="/email.svg"
+                    alt="Email Icon"
+                    width={24}
+                    height={24}
+                  />
                 </div>
-                Get the latest news and stories from <br /> around Africa directly into
-                your inbox daily.
+                <span>Get the latest news and stories from around Africa directly into your inbox daily.</span>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <Input
                   type="email"
                   placeholder="Enter your email address"
-                  className="w-3/4"
+                  className="w-full md:w-3/4 rounded-lg border-gray-200 focus:ring-purple-500"
                 />
-                <Button className="w-3/4 bg-pink-600 hover:bg-pink-700 text-white">
+                <Button className="w-full md:w-3/4 bg-pink-600 hover:bg-pink-700 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
                   Get Me In
                 </Button>
               </div>
@@ -215,12 +215,13 @@ export default function MissedStoriesSection() {
         </div>
 
         {/* Betano Advertisement */}
-        <div className="rounded-lg p-6 text-white overflow-hidden">
+        <div className="rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.01]">
           <Image
             src="/betads.svg"
             alt="Betano Advertisement"
             width={640}
             height={360}
+            className="w-full h-auto"
           />
         </div>
       </div>

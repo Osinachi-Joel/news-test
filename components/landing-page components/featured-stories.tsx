@@ -1,3 +1,4 @@
+"use client";
 "use client"
 
 import Image from "next/image"
@@ -13,7 +14,6 @@ interface Category {
   total_stories: null
 }
 
-// Story interface
 interface Story {
   id: number
   title: string
@@ -33,50 +33,31 @@ interface Story {
   updated_at: string
 }
 
-// Editor pick interface
-interface EditorPick {
+interface NormalizedStory {
   id: number
   story: Story
 }
 
-// API response interface
-interface ApiResponse {
-  message: string
-  data: {
-    data: EditorPick[]
-    links: {
-      first: string
-      last: string
-      prev: null
-      next: string
-    }
-    meta: {
-      current_page: number
-      from: number
-      last_page: number
-      links: Array<{
-        url: string | null
-        label: string
-        active: boolean
-      }>
-      path: string
-      per_page: number
-      to: number
-      total: number
-    }
-  }
-}
-
 export default function FeaturedStories() {
-  const [stories, setStories] = useState<EditorPick[]>([])
+  const [stories, setStories] = useState<NormalizedStory[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchStories = async () => {
       try {
-        const response = await fetch('https://api.agcnewsnet.com/api/general/editor-picks?page=1&per_page=15')
-        const data: ApiResponse = await response.json()
-        setStories((data.data.data || []).filter(item => item && item.story))
+        let response = await fetch('https://api.agcnewsnet.com/api/general/editor-picks?page=1&per_page=15')
+        let data = await response.json()
+        let results = (data.data?.data || []).filter((item: any) => item && item.story)
+
+        if (results.length === 0) {
+          response = await fetch('https://api.agcnewsnet.com/api/general/stories/missed-stories?page=1&per_page=15')
+          data = await response.json()
+          results = (data.data?.data || []).map((item: any) => ({
+            id: item.id,
+            story: item
+          }))
+        }
+        setStories(results)
       } catch (error) {
         console.error('Error fetching stories:', error)
       } finally {
@@ -100,8 +81,8 @@ export default function FeaturedStories() {
           {/* Left Column Skeleton */}
           <div className="lg:col-span-3 space-y-6">
             <div className="group cursor-pointer">
-              <div className="relative h-60 rounded-xs overflow-hidden mb-3">
-                <Skeleton className="w-full h-full" />
+              <div className="relative h-60 rounded-lg overflow-hidden mb-3 shadow-md">
+                <Skeleton className="w-full h-full rounded-lg" />
               </div>
               <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
               <div className="flex items-center space-x-4 text-sm mb-4">
@@ -109,7 +90,7 @@ export default function FeaturedStories() {
                 <Skeleton className="h-4 w-1/4" variant="text" />
               </div>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {[...Array(5)].map((_, i) => (
                 <Skeleton key={i} className="h-4 w-full" variant="text" />
               ))}
@@ -118,8 +99,8 @@ export default function FeaturedStories() {
           {/* Middle Column Skeleton */}
           <div className="lg:col-span-3 space-y-6">
             <div className="group cursor-pointer">
-              <div className="relative h-60 rounded-xs overflow-hidden mb-3">
-                <Skeleton className="w-full h-full" />
+              <div className="relative h-60 rounded-lg overflow-hidden mb-3 shadow-md">
+                <Skeleton className="w-full h-full rounded-lg" />
               </div>
               <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
               <div className="flex items-center space-x-4 text-sm mb-4">
@@ -127,7 +108,7 @@ export default function FeaturedStories() {
                 <Skeleton className="h-4 w-1/4" variant="text" />
               </div>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {[...Array(5)].map((_, i) => (
                 <Skeleton key={i} className="h-4 w-full" variant="text" />
               ))}
@@ -164,9 +145,9 @@ export default function FeaturedStories() {
           <div className="space-y-6">
             {/* Featured Article */}
             {featuredStories[0] && (
-              <div className="group cursor-pointer">
+              <div className="group cursor-pointer transition-all duration-300 hover:scale-[1.02]">
                 <Link href={`/stories/${featuredStories[0].story.id}`}>
-                  <div className="relative h-60 rounded-xs overflow-hidden mb-3">
+                  <div className="relative h-60 rounded-lg overflow-hidden mb-3 shadow-md hover:shadow-xl transition-shadow duration-300">
                     <Image
                       src={featuredStories[0].story.banner_image || "/placeholder.svg?height=300&width=400"}
                       alt={featuredStories[0].story.title}
@@ -198,9 +179,9 @@ export default function FeaturedStories() {
             )}
 
             {/* News Headlines List */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               {headlineStories.slice(0, 5).map((story) => (
-                <div key={story.id}>
+                <div key={story.id} className="transition-all duration-300 hover:scale-[1.02]">
                   <Link href={`/stories/${story.story.id}`}>
                     <p className="text-gray-800 text-sm leading-relaxed hover:text-purple-600 transition-colors duration-200">
                       {story.story.title}
@@ -217,9 +198,9 @@ export default function FeaturedStories() {
           <div className="space-y-6">
             {/* Opinion Article */}
             {featuredStories[1] && (
-              <div className="group cursor-pointer">
+              <div className="group cursor-pointer transition-all duration-300 hover:scale-[1.02]">
                 <Link href={`/stories/${featuredStories[1].story.id}`}>
-                  <div className="relative h-60 rounded-xs overflow-hidden mb-3">
+                  <div className="relative h-60 rounded-lg overflow-hidden mb-3 shadow-md hover:shadow-xl transition-shadow duration-300">
                     <Image
                       src={featuredStories[1].story.banner_image || "/placeholder.svg?height=300&width=400"}
                       alt={featuredStories[1].story.title}
@@ -251,9 +232,9 @@ export default function FeaturedStories() {
             )}
 
             {/* News Headlines List */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               {headlineStories.slice(5, 10).map((story) => (
-                <div key={`opinion-${story.id}`}> 
+                <div key={`opinion-${story.id}`} className="transition-all duration-300 hover:scale-[1.02]"> 
                   <Link href={`/stories/${story.story.id}`}>
                     <p className="text-gray-800 text-sm leading-relaxed hover:text-purple-600 transition-colors duration-200">
                       {story.story.title}

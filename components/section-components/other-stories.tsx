@@ -132,77 +132,91 @@ export default function OtherStories({ section }: { section: string }) {
   }
 
   return (
-    <section className="container mx-auto px-4 py-8">
-      <div className="flex items-center mb-6">
-        <div className="w-1 h-5 bg-purple-900 mr-3"></div>
-        <h2 className="text-lg font-bold text-gray-900 tracking-wide">OTHER STORIES IN <span className="uppercase">{section}</span></h2>
+    <section className="container mx-auto px-4 py-12">
+      <div className="flex items-center mb-8">
+        <div className="w-1.5 h-6 bg-purple-900 mr-3 rounded-full"></div>
+        <h2 className="text-xl font-bold text-gray-900 tracking-wide uppercase">OTHER STORIES IN {section}</h2>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Main Stories List */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-8">
           {stories.map((story) => (
-            <div key={story.id} className="flex bg-white rounded shadow-md overflow-hidden">
-              <div className="relative w-40 h-40 flex-shrink-0">
-                <Image src={story.image} alt={story.title} fill className="object-cover" />
+            <div key={story.id} className="group flex flex-col md:flex-row bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300">
+              <div className="relative w-full md:w-48 h-48 flex-shrink-0 overflow-hidden">
+                <Image 
+                  src={story.image} 
+                  alt={story.title} 
+                  fill 
+                  className="object-cover group-hover:scale-105 transition-transform duration-500" 
+                />
               </div>
-              <div className="flex-1 p-4 flex flex-col justify-between">
+              <div className="flex-1 p-6 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-1 leading-snug">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight group-hover:text-purple-700 transition-colors">
                     {story.title}
                   </h3>
-                  <div className="text-xs text-gray-500 mb-2">Posted {story.date}</div>
-                  <p className="text-gray-700 text-sm mb-3 line-clamp-3">{story.excerpt}</p>
+                  <div className="text-xs text-gray-400 mb-3 flex items-center">
+                    <span className="w-1 h-1 bg-gray-300 rounded-full mr-2"></span>
+                    Posted {story.date}
+                  </div>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">{story.excerpt}</p>
                 </div>
-                <Link href={`/stories/${story.id}`} className="inline-block mt-2">
-                  <button className="px-4 py-1 text-xs bg-gray-100 rounded-2xl border border-gray-300 hover:bg-gray-200 transition">Continue reading</button>
+                <Link href={`/stories/${story.id}`} className="inline-block">
+                  <button className="px-5 py-2 text-xs font-semibold bg-gray-50 text-gray-700 rounded-lg border border-gray-200 hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all duration-300 shadow-sm">
+                    Continue reading
+                  </button>
                 </Link>
               </div>
             </div>
           ))}
         </div>
         {/* Sidebar Ads */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           {ads.map((ad, idx) => (
-            <div key={idx} className="flex items-center justify-center">
+            <div key={idx} className="flex items-center justify-center rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
               <Image 
                 src={ad.src} 
                 alt={ad.alt} 
                 width={idx === 2 ? 233 : 300} 
                 height={idx === 2 ? 466 : 250} 
-                className="" 
+                className="w-full h-auto object-contain bg-gray-50 p-2" 
               />
             </div>
           ))}
         </div>
       </div>
       {/* Pagination */}
-      <div className="flex items-center gap-8 mt-8 text-sm">
-        <span>Showing {startItem} - {endItem} of {totalStories}</span>
-        <div className="flex items-center gap-1">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 mt-12 pt-8 border-t border-gray-100 text-sm">
+        <span className="text-gray-500 font-medium tracking-tight">Showing <span className="text-gray-900 font-bold">{startItem} - {endItem}</span> of <span className="text-gray-900 font-bold">{totalStories}</span></span>
+        <div className="flex items-center gap-2">
           <button 
-            className="w-8 h-8 flex items-center justify-center rounded bg-white hover:bg-gray-100" 
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm" 
             aria-label="Previous"
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
             &#60;
           </button>
-          {Array.from({ length: Math.min(8, totalPages) }, (_, i) => {
-            const pageNum = i + 1
-            return (
-              <button
-                key={pageNum}
-                className={`w-8 h-8 flex items-center text-white hover:text-black justify-center rounded-md border ${
-                  pageNum === currentPage ? "bg-gray-800 text-white" : "bg-gray-400 hover:bg-gray-100"
-                }`}
-                onClick={() => handlePageChange(pageNum)}
-              >
-                {pageNum}
-              </button>
-            )
-          })}
+          <div className="flex items-center gap-1.5">
+            {Array.from({ length: Math.min(8, totalPages) }, (_, i) => {
+              const pageNum = i + 1
+              return (
+                <button
+                  key={pageNum}
+                  className={`w-10 h-10 flex items-center justify-center rounded-lg font-semibold transition-all shadow-sm ${
+                    pageNum === currentPage 
+                      ? "bg-purple-700 text-white border border-purple-700" 
+                      : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                  }`}
+                  onClick={() => handlePageChange(pageNum)}
+                >
+                  {pageNum}
+                </button>
+              )
+            })}
+          </div>
           <button 
-            className="w-8 h-8 flex items-center justify-center rounded bg-white hover:bg-gray-100" 
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm" 
             aria-label="Next"
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}

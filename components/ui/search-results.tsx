@@ -35,63 +35,78 @@ export default function SearchResults() {
         </div>
 
         {/* Results */}
-        <div className="overflow-y-auto max-h-[calc(80vh-80px)]">
+        <div className="overflow-y-auto max-h-[calc(80vh-80px)] bg-gray-50/30">
           {isSearching ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-              <span className="ml-3 text-gray-600">Searching...</span>
+            <div className="flex flex-col items-center justify-center py-20">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600 mb-4"></div>
+              <span className="text-gray-500 font-medium">Searching our database...</span>
             </div>
           ) : searchResults.length === 0 ? (
-            <div className="text-center py-12">
-              <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-700 mb-2">No results found</h3>
-              <p className="text-gray-500">
+            <div className="text-center py-20">
+              <div className="bg-gray-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Search className="w-10 h-10 text-gray-300" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">No results found</h3>
+              <p className="text-gray-500 max-w-xs mx-auto">
                 Try searching with different keywords or check your spelling.
               </p>
             </div>
           ) : (
-            <div className="p-4">
-              <div className="mb-4 text-sm text-gray-600">
-                Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
+            <div className="p-6 md:p-8">
+              <div className="mb-6 flex items-center justify-between">
+                <div className="text-sm text-gray-500 font-medium">
+                  Found <span className="text-gray-900 font-bold">{searchResults.length}</span> result{searchResults.length !== 1 ? 's' : ''}
+                </div>
+                <div className="h-px flex-1 bg-gray-100 ml-4"></div>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {searchResults.map((story) => (
                   <Link
                     key={story.id}
                     href={`/stories/${story.slug}`}
-                    className="block hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200"
+                    className="group block bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md hover:border-purple-100 transition-all duration-300"
                     onClick={clearSearch}
                   >
-                    <div className="flex space-x-4">
+                    <div className="flex flex-col md:flex-row gap-6">
                       {story.banner_image && (
                         <div className="flex-shrink-0">
-                          <Image
-                            src={story.banner_image}
-                            alt={story.title}
-                            width={120}
-                            height={80}
-                            className="rounded-md object-cover"
-                          />
+                          <div className="relative w-full md:w-40 h-32 rounded-lg overflow-hidden shadow-inner">
+                            <Image
+                              src={story.banner_image}
+                              alt={story.title}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          </div>
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          {story.category && (
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-purple-600 bg-purple-50 px-2 py-0.5 rounded">
+                              {story.category}
+                            </span>
+                          )}
+                          <span className="text-[10px] text-gray-400 font-medium">
+                            {story.created_at && new Date(story.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </span>
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-700 transition-colors">
                           {story.title}
                         </h3>
                         {story.subtitle && (
-                          <p className="text-gray-600 mb-2 line-clamp-2">
+                          <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">
                             {story.subtitle}
                           </p>
                         )}
-                        <div className="flex items-center space-x-4 text-sm text-gray-500">
+                        <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
                           {story.author && (
-                            <span>By {story.author}</span>
-                          )}
-                          {story.category && (
-                            <span>• {story.category}</span>
-                          )}
-                          {story.created_at && (
-                            <span>• {new Date(story.created_at).toLocaleDateString()}</span>
+                            <div className="flex items-center gap-1.5">
+                              <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center text-[10px] text-gray-600 font-bold border border-gray-200">
+                                {story.author.charAt(0)}
+                              </div>
+                              <span>By {story.author}</span>
+                            </div>
                           )}
                         </div>
                       </div>

@@ -98,51 +98,58 @@ export default function AlsoReading() {
   }
 
   return (
-    <section className="container bg-white mx-auto px-4 py-8">
-      <div className="flex justify-between mb-6">
+    <section className="container bg-white mx-auto px-4 py-12">
+      <div className="flex justify-between items-center mb-8 pb-4 border-b border-gray-100">
         {/* Header */}
         <div className="flex items-center ">
-          <span className="w-1.5 h-6 bg-purple-900 mr-3"></span>
-          <h2 className="text-lg md:text-xl font-bold text-gray-900 tracking-wide">PEOPLE ARE ALSO READING:</h2>
+          <span className="w-1.5 h-6 bg-purple-900 mr-3 rounded-full"></span>
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 tracking-wide uppercase">PEOPLE ARE ALSO READING</h2>
         </div>
-        {/* Carousel navigation dots and arrows */}
-        <div className="flex items-center justify-end gap-2 pr-2">
+        {/* Carousel navigation arrows */}
+        <div className="flex items-center gap-3">
           <button
-            className={`text-gray-400 ${currentPage === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:text-black'}`}
+            className={`w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 transition-all ${currentPage === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-gray-50 hover:border-gray-300 text-gray-800'}`}
             aria-label="Previous"
             onClick={handlePrev}
             disabled={currentPage === 0}
           >
-            <ArrowLeft/>
+            <ArrowLeft className="w-5 h-5"/>
           </button>
-          {[...Array(totalPages)].map((_, i) => (
-            <span key={i} className={`w-3 h-3 rounded-full mx-1 ${i === currentPage ? 'bg-red-500' : 'bg-gray-300'}`}></span>
-          ))}
+          <div className="flex items-center gap-1.5">
+            {[...Array(totalPages)].map((_, i) => (
+              <span key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i === currentPage ? 'w-6 bg-red-500' : 'w-1.5 bg-gray-200'}`}></span>
+            ))}
+          </div>
           <button
-            className={`text-gray-800 ${currentPage === totalPages - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:text-black'}`}
+            className={`w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 transition-all ${currentPage === totalPages - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-gray-50 hover:border-gray-300 text-gray-800'}`}
             aria-label="Next"
             onClick={handleNext}
             disabled={currentPage === totalPages - 1}
           >
-            <ArrowRight/>
+            <ArrowRight className="w-5 h-5"/>
           </button>
         </div>
       </div>
       {/* News Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {visibleNews.map((news) => (
-          <Link key={news.id} href={`/stories/${news.slug}`}>
-            <div className="w-[240px] h-[300px] flex-shrink-0 rounded-md bg-white shadow-md relative">
-              <div className="relative w-full h-full rounded-md overflow-hidden">
-                <Image src={news.image} alt={news.title} width={400} height={300} className="rounded-sm object-cover w-full h-full" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+          <Link key={news.id} href={`/stories/${news.slug}`} className="group">
+            <div className="flex flex-col rounded-xl bg-white shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 overflow-hidden border border-gray-100 h-full">
+              <div className="relative w-full aspect-[4/3] overflow-hidden">
+                <Image 
+                  src={news.image} 
+                  alt={news.title} 
+                  fill 
+                  className="object-cover group-hover:scale-110 transition-transform duration-700" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
                 <div className="absolute top-4 left-4">
-                  <span className="inline-block text-white text-xs px-3 py-2 rounded-xl font-medium 
-                  bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-400">{news.category}</span>
+                  <span className="inline-block text-white text-[10px] px-3 py-1.5 rounded-full font-bold uppercase tracking-widest
+                  bg-black/40 backdrop-blur-md border border-white/20">{news.category}</span>
                 </div>
-              </div>
-              <div className="absolute bottom-4 left-4 right-4">
-                <h3 className="text-white text-lg font-semibold drop-shadow-md">{news.title}</h3>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="text-white text-lg font-bold leading-tight group-hover:text-red-400 transition-colors duration-300">{news.title}</h3>
+                </div>
               </div>
             </div>
           </Link>

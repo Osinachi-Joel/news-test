@@ -1,3 +1,4 @@
+"use client";
 "use client"
 
 import Image from "next/image"
@@ -20,7 +21,7 @@ interface EditorPick {
     views: number
     editors_pick: string | null
     top_story: string | null
-    user: {
+    user?: {
       id: number
       email: string
       email_verified_at: string
@@ -36,8 +37,8 @@ interface EditorPick {
       category_id: number
       category_name: string
       total_stories: number | null
-      created_at: string
-      updated_at: string
+      created_at?: string
+      updated_at?: string
     }
     banner_image: string
     created_at: string
@@ -47,33 +48,6 @@ interface EditorPick {
   updated_at: string
 }
 
-interface ApiResponse {
-  message: string
-  data: {
-    data: EditorPick[]
-    links: {
-      first: string
-      last: string
-      prev: string | null
-      next: string
-    }
-    meta: {
-      current_page: number
-      from: number
-      last_page: number
-      links: Array<{
-        url: string | null
-        label: string
-        active: boolean
-      }>
-      path: string
-      per_page: number
-      to: number
-      total: number
-    }
-  }
-}
-
 export default function NewsPicturesSection() {
   const [editorPicks, setEditorPicks] = useState<EditorPick[]>([])
   const [loading, setLoading] = useState(true)
@@ -81,12 +55,23 @@ export default function NewsPicturesSection() {
   useEffect(() => {
     const fetchEditorPicks = async () => {
       try {
-        const response = await fetch('https://api.agcnewsnet.com/api/general/editor-picks?page=1&per_page=15')
-        const data: ApiResponse = await response.json()
+        let response = await fetch('https://api.agcnewsnet.com/api/general/editor-picks?page=1&per_page=15')
+        let data = await response.json()
+        let results = (data.data?.data || []).filter((item: any) => item && item.story)
+
+        if (results.length === 0) {
+          response = await fetch('https://api.agcnewsnet.com/api/general/stories/missed-stories?page=1&per_page=15')
+          data = await response.json()
+          results = (data.data?.data || []).map((item: any) => ({
+            id: item.id,
+            story: item,
+            created_at: item.created_at,
+            updated_at: item.updated_at
+          }))
+        }
         
         // Randomize the order of the news
-        const filteredData = (data.data.data || []).filter(item => item && item.story)
-        const shuffledData = [...filteredData].sort(() => Math.random() - 0.5)
+        const shuffledData = [...results].sort(() => Math.random() - 0.5)
         setEditorPicks(shuffledData)
       } catch (error) {
         console.error('Error fetching editor picks:', error)

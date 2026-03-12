@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -5,20 +6,17 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 interface ApiStory {
   id: number
-  story: {
-    id: number
-    title: string
-    subtitle: string
-    author: string
-    banner_image: string
-  }
+  title: string
+  subtitle: string
+  author: string
+  banner_image: string
 }
 
 const API_URL =
-  "https://api.agcnewsnet.com/api/general/editor-picks?page="
-const API_PER_PAGE = 15 // API returns 15 per page
-const STORIES_PER_PAGE = 5 // Sidebar paginates 5 per page
-const PAGINATION_WINDOW = 5 // Show 5 page numbers at a time
+  "https://api.agcnewsnet.com/api/general/stories/missed-stories?page="
+const API_PER_PAGE = 15 
+const STORIES_PER_PAGE = 5 
+const PAGINATION_WINDOW = 5 
 
 export default function MoreStories() {
   const [featured, setFeatured] = useState<ApiStory | null>(null)
@@ -38,15 +36,23 @@ export default function MoreStories() {
       const res = await fetch(`${API_URL}${pageNum}&per_page=${API_PER_PAGE}`)
       if (!res.ok) throw new Error("Failed to fetch stories")
       const data = await res.json()
-      const newStories: ApiStory[] = (data.data.data || []).filter((item: ApiStory) => item && item.story)
+      // Adjusted mapping for missed-stories endpoint where story data is at top level of items
+      const newStories: ApiStory[] = (data.data.data || []).filter((item: any) => item).map((item: any) => ({
+        id: item.id,
+        title: item.title,
+        subtitle: item.subtitle,
+        author: item.author,
+        banner_image: item.banner_image || "/placeholder.svg"
+      }))
+      
       if (pageNum === 1) {
-        setFeatured(newStories[0])
+        setFeatured(newStories[0] || null)
         setAllStories(newStories.slice(1))
       } else {
         setAllStories((prev) => [...prev, ...newStories])
       }
-      if (!data.data.links.next) setHasMoreApiPages(false)
-      setTotalStories(data.data.meta.total - 1) // minus featured
+      if (!data.data.links?.next) setHasMoreApiPages(false)
+      setTotalStories((data.data.meta?.total || 1) - 1) // minus featured
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message)
@@ -121,12 +127,12 @@ export default function MoreStories() {
         {/* Featured Article */}
         <div className="lg:col-span-2">
           {featured ? (
-            <div className="relative group cursor-pointer">
-              <Link href={`/stories/${featured.story.id}`}>
-                <div className="relative h-96 rounded-xs overflow-hidden">
+            <div className="relative group cursor-pointer transition-all duration-300 hover:scale-[1.02]">
+              <Link href={`/stories/${featured.id}`}>
+                <div className="relative h-96 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
                   <Image
-                    src={featured.story.banner_image}
-                    alt={featured.story.title}
+                    src={featured.banner_image}
+                    alt={featured.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -146,12 +152,12 @@ export default function MoreStories() {
                   {/* Article Content */}
                   <div className="absolute bottom-6 left-6 right-6">
                     <h2 className="text-white text-2xl md:text-3xl font-bold leading-tight mb-2">
-                      {featured.story.title}
+                      {featured.title}
                     </h2>
-                    <p className="text-gray-200 text-lg mb-3">{featured.story.subtitle}</p>
+                    <p className="text-gray-200 text-lg mb-3 line-clamp-2">{featured.subtitle}</p>
                     <div className="flex items-center text-white text-sm">
                       <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                      <span>{featured.story.author}</span>
+                      <span>{featured.author}</span>
                     </div>
                   </div>
                 </div>
@@ -159,7 +165,7 @@ export default function MoreStories() {
             </div>
           ) : loading ? (
             <div className="h-96 flex flex-col gap-4 items-center justify-center">
-              <Skeleton className="w-full h-80 mb-4" />
+              <Skeleton className="w-full h-80 mb-4 rounded-lg" />
               <Skeleton className="h-8 w-3/4 mb-2" variant="text" />
               <Skeleton className="h-6 w-1/2" variant="text" />
             </div>
@@ -174,39 +180,39 @@ export default function MoreStories() {
             <div
               id="more-stories-scrollable"
               style={{ maxHeight: "500px", overflow: "auto" }}
-              className="space-y-2"
+              className="space-y-4"
             >
-              {loading ? (
+              {loading && allStories.length === 0 ? (
                 [...Array(5)].map((_, i) => (
                   <div key={i} className="group">
                     <div className="flex items-start space-x-3 p-2">
-                      <Skeleton className="w-3 h-3 rounded mt-2 flex-shrink-0" variant="circle" />
+                      <Skeleton className="w-3 h-3 rounded-lg mt-2 flex-shrink-0" variant="circle" />
                       <Skeleton className="h-4 w-3/4" variant="text" />
                     </div>
                   </div>
                 ))
               ) : (
                 currentStories.map((story, idx) => (
-                  <div key={`${story.story.id}-${startIdx + idx}`} className="group">
-                    <Link href={`/stories/${story.story.id}`}>
-                      <div className="flex items-start space-x-3 hover:bg-gray-50 p-2 rounded transition-colors duration-200">
-                        <div className="w-3 h-3 bg-red-500 rounded mt-2 flex-shrink-0"></div>
-                        <p className="text-gray-800 text-sm leading-relaxed group-hover:text-pink-600 transition-colors duration-200">
-                          {story.story.title}
+                  <div key={`${story.id}-${startIdx + idx}`} className="group transition-all duration-300 hover:scale-[1.02]">
+                    <Link href={`/stories/${story.id}`}>
+                      <div className="flex items-start space-x-3 hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
+                        <div className="w-3 h-3 bg-red-500 rounded-lg mt-2 flex-shrink-0"></div>
+                        <p className="text-gray-800 text-sm leading-relaxed group-hover:text-pink-600 transition-colors duration-200 line-clamp-2">
+                          {story.title}
                         </p>
                       </div>
                     </Link>
                   </div>
                 ))
               )}
-              {loading && <div className="text-center py-2">Loading...</div>}
+              {loading && allStories.length > 0 && <div className="text-center py-2">Loading...</div>}
               {error && <div className="text-red-500 mt-2">{error}</div>}
             </div>
-            {/* Pagination Controls (dynamic, styled like other-stories) */}
+            {/* Pagination Controls */}
             <div className="flex items-center gap-8 mt-8 text-sm">
               <div className="flex items-center gap-1">
                 <button
-                  className="w-8 h-8 flex items-center justify-center rounded bg-white hover:bg-gray-100"
+                  className="w-8 h-8 flex items-center justify-center rounded bg-white hover:bg-gray-100 disabled:opacity-50"
                   aria-label="Previous"
                   onClick={handlePrev}
                   disabled={sidebarPage === 1}
@@ -225,7 +231,7 @@ export default function MoreStories() {
                       </button>
                 )}
                 <button
-                  className="w-8 h-8 flex items-center justify-center rounded bg-white hover:bg-gray-100"
+                  className="w-8 h-8 flex items-center justify-center rounded bg-white hover:bg-gray-100 disabled:opacity-50"
                   aria-label="Next"
                   onClick={handleNext}
                   disabled={sidebarPage === totalPages || totalPages === 0}

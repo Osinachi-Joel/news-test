@@ -17,11 +17,12 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRef, useState } from "react";
 
 export default function HomePage() {
-  const sectionRefs = [useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null)];
   const [currentIdx, setCurrentIdx] = useState(0);
-  const sectionCount = sectionRefs.length;
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const sectionCount = 3; // Politics, Business, Sport
   const scrollToSection = (idx: number) => {
-    const ref = sectionRefs[idx].current;
+    const ref = sectionRefs.current[idx];
     if (ref) {
       ref.scrollIntoView({ behavior: "smooth", inline: "start" });
       setCurrentIdx(idx);
@@ -49,13 +50,13 @@ export default function HomePage() {
           </button>
         )}
         <nav id="scrollable-nav" className="flex overflow-x-hidden no-scrollbar py-4 px-0 h-[700px] w-full" style={{scrollbarWidth:'none'}}>
-          <div ref={sectionRefs[0]} className="flex-shrink-0 min-w-full w-full h-full flex items-center justify-center">
+          <div ref={(el) => { sectionRefs.current[0] = el }} className="flex-shrink-0 min-w-full w-full h-full flex items-center justify-center">
             <PoliticsSection />
           </div>
-          <div ref={sectionRefs[1]} className="flex-shrink-0 min-w-full w-full h-full flex items-center justify-center">
+          <div ref={(el) => { sectionRefs.current[1] = el }} className="flex-shrink-0 min-w-full w-full h-full flex items-center justify-center">
             <BusinessSection />
           </div>
-          <div ref={sectionRefs[2]} className="flex-shrink-0 min-w-full w-full h-full flex items-center justify-center">
+          <div ref={(el) => { sectionRefs.current[2] = el }} className="flex-shrink-0 min-w-full w-full h-full flex items-center justify-center">
             <SportSection />
           </div>
         </nav>

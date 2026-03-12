@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
@@ -62,18 +63,18 @@ export default function PoliticsSection() {
         {/* Main Featured Article */}
         <div className="lg:col-span-2">
           {loading && (
-            <div className="group cursor-pointer p-4">
-              <div className="relative h-64 md:h-80 rounded-xs overflow-hidden mb-4">
-                <Skeleton className="w-full h-full" />
+            <div className="group cursor-pointer p-4 transition-all duration-300 hover:scale-[1.02]">
+              <div className="relative h-64 md:h-80 rounded-lg overflow-hidden mb-4 shadow-md">
+                <Skeleton className="w-full h-full rounded-lg" />
               </div>
               <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
             </div>
           )}
           {error && <div className="text-red-500">{error}</div>}
           {!loading && !error && sidebarStories.length > 0 && (
-            <div className="group cursor-pointer p-4">
+            <div className="group cursor-pointer p-4 transition-all duration-300 hover:scale-[1.02]">
               <Link href={`/stories/${sidebarStories[0].id}`}>
-                <div className="relative h-64 md:h-80 rounded-xs overflow-hidden mb-4">
+                <div className="relative h-64 md:h-80 rounded-lg overflow-hidden mb-4 shadow-md hover:shadow-xl transition-shadow duration-300">
                   <Image
                     src={sidebarStories[0].image}
                     alt={sidebarStories[0].title}
@@ -81,7 +82,7 @@ export default function PoliticsSection() {
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <h3 className="text-2xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-200">
                     {sidebarStories[0].title}
                   </h3>
@@ -94,26 +95,26 @@ export default function PoliticsSection() {
 
         {/* Sidebar Stories */}
         <div className="lg:col-span-1">
-          <div className="">
+          <div className="space-y-4">
             {loading && (
               [...Array(5)].map((_, i) => (
                 <div key={i} className="group">
-                  <div className="flex items-start space-x-3 hover:bg-gray-50 p-1 rounded transition-colors duration-200">
-                    <Skeleton className="w-3 h-3 rounded-xs mt-2 flex-shrink-0" variant="circle" />
+                  <div className="flex items-start space-x-3 hover:bg-gray-50 p-1 rounded-lg transition-colors duration-200">
+                    <Skeleton className="w-3 h-3 rounded-lg mt-2 flex-shrink-0" variant="circle" />
                     <div className="flex-1">
                       <Skeleton className="h-4 w-full" variant="text" />
                     </div>
-                    <Skeleton className="w-20 h-10" />
+                    <Skeleton className="w-20 h-10 rounded-lg" />
                   </div>
                 </div>
               ))
             )}
             {error && <div className="text-red-500">{error}</div>}
             {!loading && !error && sidebarStories.slice(1, 6).map((story) => (
-              <div key={story.id} className="group">
+              <div key={story.id} className="group transition-all duration-300 hover:scale-[1.02]">
                 <Link href={`/stories/${story.id}`}>
-                  <div className="flex items-start space-x-3 hover:bg-gray-50 p-1 rounded transition-colors duration-200">
-                    <div className="w-3 h-3 bg-red-500 rounded-xs mt-2 flex-shrink-0"></div>
+                  <div className="flex items-start space-x-3 hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
+                    <div className="w-3 h-3 bg-red-500 rounded-lg mt-2 flex-shrink-0"></div>
                     <div className="flex-1">
                       <p className="text-gray-800 text-xs leading-relaxed group-hover:text-purple-600 transition-colors duration-200">
                         {story.title}
@@ -125,7 +126,7 @@ export default function PoliticsSection() {
                         alt="POLITICS"
                         width={100}
                         height={40}
-                        className="object-cover rounded"
+                        className="object-cover rounded-lg"
                       />
                     </div>
                   </div>

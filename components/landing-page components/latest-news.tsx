@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import Link from "next/link"
@@ -69,10 +70,10 @@ export default function LatestNews() {
           <h2 className="text-lg md:text-xl font-bold text-gray-900 tracking-wide">LATEST NEWS</h2>
         </div>
         {/* Skeleton Loader */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-2 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 pb-2 w-full">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="w-[240px] h-[300px] flex-shrink-0 rounded-md bg-white shadow-md relative">
-              <Skeleton className="w-full h-full rounded-md" />
+            <div key={i} className="w-full h-[380px] flex-shrink-0 rounded-lg bg-white shadow-md relative">
+              <Skeleton className="w-full h-full rounded-lg" />
               <div className="absolute bottom-4 left-4 right-4">
                 <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
               </div>
@@ -131,12 +132,12 @@ export default function LatestNews() {
         </div>
       </div>
       {/* News Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 pb-2">
         {visibleNews.map((news) => (
-          <Link key={news.id} href={`/stories/${news.slug}`}>
-            <div className="w-[240px] h-[300px] flex-shrink-0 rounded-md bg-white shadow-md relative">
-              <div className="relative w-full h-full rounded-md overflow-hidden">
-                <Image src={news.image} alt={news.title} width={400} height={300} className="rounded-sm object-cover w-full h-full" />
+          <Link key={news.id} href={`/stories/${news.slug}`} className="transition-all duration-300 hover:scale-[1.02]">
+            <div className="w-full h-[380px] flex-shrink-0 rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow duration-300 relative">
+              <div className="relative w-full h-full rounded-lg overflow-hidden">
+                <Image src={news.image} alt={news.title} width={400} height={300} className="rounded-lg object-cover w-full h-full" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <div className="absolute top-4 left-4">
                   <span className="inline-block text-white text-xs px-3 py-2 rounded-xl font-medium 

@@ -1,3 +1,4 @@
+"use client";
 "use client"
 
 import Image from "next/image"
@@ -20,7 +21,7 @@ interface EditorPick {
     views: number
     editors_pick: string | null
     top_story: string | null
-    user: {
+    user?: {
       id: number
       email: string
       email_verified_at: string
@@ -36,8 +37,8 @@ interface EditorPick {
       category_id: number
       category_name: string
       total_stories: number | null
-      created_at: string
-      updated_at: string
+      created_at?: string
+      updated_at?: string
     }
     banner_image: string
     created_at: string
@@ -47,33 +48,6 @@ interface EditorPick {
   updated_at: string
 }
 
-interface ApiResponse {
-  message: string
-  data: {
-    data: EditorPick[]
-    links: {
-      first: string
-      last: string
-      prev: string | null
-      next: string
-    }
-    meta: {
-      current_page: number
-      from: number
-      last_page: number
-      links: Array<{
-        url: string | null
-        label: string
-        active: boolean
-      }>
-      path: string
-      per_page: number
-      to: number
-      total: number
-    }
-  }
-}
-
 export default function NewsVideosSection() {
   const [editorPicks, setEditorPicks] = useState<EditorPick[]>([])
   const [loading, setLoading] = useState(true)
@@ -81,9 +55,21 @@ export default function NewsVideosSection() {
   useEffect(() => {
     const fetchEditorPicks = async () => {
       try {
-        const response = await fetch('https://api.agcnewsnet.com/api/general/editor-picks?page=1&per_page=15')
-        const data: ApiResponse = await response.json()
-        setEditorPicks((data.data.data || []).filter(item => item && item.story))
+        let response = await fetch('https://api.agcnewsnet.com/api/general/editor-picks?page=1&per_page=15')
+        let data = await response.json()
+        let results = (data.data?.data || []).filter((item: any) => item && item.story)
+
+        if (results.length === 0) {
+          response = await fetch('https://api.agcnewsnet.com/api/general/stories/missed-stories?page=1&per_page=15')
+          data = await response.json()
+          results = (data.data?.data || []).map((item: any) => ({
+            id: item.id,
+            story: item,
+            created_at: item.created_at,
+            updated_at: item.updated_at
+          }))
+        }
+        setEditorPicks(results)
       } catch (error) {
         console.error('Error fetching editor picks:', error)
       } finally {
@@ -107,12 +93,12 @@ export default function NewsVideosSection() {
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[...Array(6)].map((_, index) => (
             <div key={index} className="animate-pulse">
-              <div className="bg-gray-300 h-48 rounded-xs mb-3"></div>
-              <div className="h-4 bg-gray-300 rounded mb-2"></div>
-              <div className="h-3 bg-gray-300 rounded w-3/4"></div>
+              <div className="bg-gray-300 h-48 rounded-lg mb-3 shadow-md"></div>
+              <div className="h-4 bg-gray-300 rounded-lg mb-2"></div>
+              <div className="h-3 bg-gray-300 rounded-lg w-3/4"></div>
             </div>
           ))}
         </div>
@@ -135,11 +121,11 @@ export default function NewsVideosSection() {
       </div>
 
       {/* Videos Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {editorPicks.slice(0, 6).map((pick) => (
-          <div key={pick.id} className="group cursor-pointer">
+          <div key={pick.id} className="group cursor-pointer transition-all duration-300 hover:scale-[1.02]">
             <Link href={`/stories/${pick.story.id}`}>
-              <div className="relative rounded-xs overflow-hidden mb-3">
+              <div className="relative rounded-lg overflow-hidden mb-3 shadow-md hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-48">
                   <Image
                     src={pick.story.banner_image || "/placeholder.svg"}

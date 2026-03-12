@@ -141,45 +141,61 @@ export default function MainStory() {
       <div className="flex flex-col lg:flex-row gap-8 bg-white w-full">
       {/* Main Content */}
       <main className="flex-1 lg:flex-3">
-        <div className="mb-4 flex items-center text-xs text-gray-500 gap-2">
-          <span className="border px-2 py-0.5 rounded-full">World News</span>
-          <button className="ml-2 px-2 py-0.5 border rounded text-blue-600 hover:bg-blue-50">+ Share</button>
+        <div className="mb-6 flex items-center text-xs text-gray-500 gap-3">
+          <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium border border-blue-100 uppercase tracking-wider">World News</span>
+          <button className="flex items-center gap-1 px-3 py-1 bg-gray-50 border border-gray-200 rounded-full text-gray-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-all duration-200">
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6a3 3 0 100 2.684m0-2.684l6.632-3.316m0 0a3 3 0 101.342-5.368 3 3 0 00-1.342 5.368zm0 9.368a3 3 0 101.342 5.368 3 3 0 00-1.342 5.368z"></path></svg>
+            Share
+          </button>
         </div>
-        <h1 className="text-2xl font-bold mb-4">
+        <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-tight text-gray-900">
           {story.title}
         </h1>
-        <div className="text-gray-500 text-sm mb-4">
-          Posted {story.created_at ? new Date(story.created_at).toLocaleString() : ""} • 4 minute read
+        <div className="flex flex-wrap items-center gap-4 text-gray-500 text-sm mb-8 pb-8 border-b border-gray-100">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-100 to-blue-100 flex items-center justify-center text-purple-700 font-bold border border-purple-200">
+              {story.author.charAt(0)}
+            </div>
+            <div className="flex flex-col">
+              <span className="text-gray-900 font-semibold">By {story.author}</span>
+              <span>Published {story.created_at ? new Date(story.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : ""}</span>
+            </div>
+          </div>
+          <div className="hidden md:block w-px h-8 bg-gray-200 mx-2"></div>
+          <div className="flex items-center gap-2">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>4 minute read</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2 mb-6">
-          <div className="w-8 h-8 rounded-full bg-gray-300" />
-          <span className="text-sm text-gray-700">By {story.author}</span>
-        </div>
-        <div className="mb-6">
+        <div className="mb-10 group">
           {story.banner_image && (
-            <Image
-              src={story.banner_image}
-              alt={story.title}
-              width={600}
-              height={400}
-              className="w-full h-80 object-cover rounded"
-            />
+            <div className="rounded-xl overflow-hidden shadow-lg border border-gray-100">
+              <Image
+                src={story.banner_image}
+                alt={story.title}
+                width={800}
+                height={500}
+                className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-700"
+              />
+            </div>
           )}
-          <div className="text-xs text-gray-400 mt-2">
+          <div className="text-xs text-gray-400 mt-3 flex items-center italic">
+            <svg className="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
             Russia-Africa Forum. Photo: Getty Images
           </div>
         </div>
         <article className="prose prose-lg max-w-none text-gray-800 leading-relaxed">
           <div 
-            className="space-y-6 text-base leading-7"
+            className="space-y-8 text-lg leading-8"
             dangerouslySetInnerHTML={{ 
               __html: (() => {
                 const paragraphs = story.content.split('</p>');
                 const middleIndex = Math.floor(paragraphs.length / 2);
                 
                 const adHtml = `
-                  <div class="my-8 flex flex-col items-center">
-                    <img src="/ad.svg" alt="QuickBooks Advertisement" class="w-full h-64 object-contain rounded mb-3" />
+                  <div class="my-12 p-6 bg-gray-50 rounded-xl border border-gray-100 flex flex-col items-center shadow-sm">
+                    <span class="text-[10px] text-gray-400 uppercase tracking-widest mb-4 font-bold">Advertisement</span>
+                    <img src="/ad.svg" alt="QuickBooks Advertisement" class="w-full h-64 object-contain rounded-lg hover:opacity-90 transition-opacity cursor-pointer" />
                   </div>
                 `;
                 
@@ -229,20 +245,27 @@ export default function MainStory() {
       </main>
       
       {/* Sidebar */}
-      <aside className="w-full lg:w-96 flex-shrink-0 space-y-6 lg:ml-8">
-        <section className="bg-gray-50 rounded p-4 mb-4">
-          <h2 className="font-semibold text-sm mb-3 text-gray-700">TOP STORIES</h2>
+      <aside className="w-full lg:w-96 flex-shrink-0 space-y-10 lg:ml-8">
+        <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-300">
+          <h2 className="font-bold text-xs mb-6 text-gray-900 uppercase tracking-widest border-b border-gray-50 pb-3 flex items-center">
+            <span className="w-1 h-4 bg-red-600 mr-2 rounded-full"></span>
+            TOP STORIES
+          </h2>
           {topStoriesLoading ? (
-            <div className="text-center py-4 text-gray-400 text-sm">Loading top stories...</div>
+            <div className="flex justify-center py-8">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-red-600"></div>
+            </div>
           ) : topStoriesError ? (
             <div className="text-center py-4 text-red-400 text-sm">{topStoriesError}</div>
           ) : (
-            <ul className="space-y-3">
+            <ul className="space-y-5">
               {topStories.map((story) => (
-                <li key={story.id} className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <a href={`/stories/${story.id}`} className="text-sm text-blue-900 hover:underline leading-relaxed">
-                    {story.title}
+                <li key={story.id} className="group">
+                  <a href={`/stories/${story.id}`} className="flex items-start gap-4">
+                    <div className="w-1.5 h-1.5 bg-gray-200 rounded-full mt-2 group-hover:bg-red-500 group-hover:scale-125 transition-all duration-200 flex-shrink-0"></div>
+                    <span className="text-sm text-gray-700 group-hover:text-blue-700 leading-relaxed font-medium transition-colors">
+                      {story.title}
+                    </span>
                   </a>
                 </li>
               ))}
@@ -251,25 +274,31 @@ export default function MainStory() {
         </section>
         
         {/* MTN Advertisement */}
-        <div className="flex flex-col items-center">
-          <Image
-            src="/mtnads.svg"
-            alt="MTN Advertisement"
-            width={800}
-            height={600}
-            className="w-full h-[400px] object-contain rounded mb-3"
-          />
+        <div className="flex flex-col items-center group">
+          <div className="w-full rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-gray-100">
+            <Image
+              src="/mtnads.svg"
+              alt="MTN Advertisement"
+              width={800}
+              height={600}
+              className="w-full h-auto object-contain bg-gray-50 group-hover:scale-[1.03] transition-transform duration-500"
+            />
+          </div>
+          <span className="text-[10px] text-gray-400 uppercase tracking-widest mt-3 font-medium">Advertisement</span>
         </div>
         
         {/* Latex Foam Advertisement */}
-        <div className="flex flex-col items-center">
-          <Image
-            src="/foam.svg"
-            alt="Latex Foam Advertisement"
-            width={800}
-            height={600}
-            className="w-full h-[400px] object-contain rounded mb-3"
-          />
+        <div className="flex flex-col items-center group">
+          <div className="w-full rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-gray-100">
+            <Image
+              src="/foam.svg"
+              alt="Latex Foam Advertisement"
+              width={800}
+              height={600}
+              className="w-full h-auto object-contain bg-gray-50 group-hover:scale-[1.03] transition-transform duration-500"
+            />
+          </div>
+          <span className="text-[10px] text-gray-400 uppercase tracking-widest mt-3 font-medium">Advertisement</span>
         </div>
       </aside>
     </div>

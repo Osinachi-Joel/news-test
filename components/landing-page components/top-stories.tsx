@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -74,17 +75,17 @@ export default function TopStories() {
       <section className="container bg-white mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[300px]">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">TOP STORIES</h2>
         {/* Skeleton Loader */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
           {/* Main Story Skeleton */}
           <div className="relative group cursor-pointer md:row-span-2">
-            <Skeleton className="w-full h-76 mb-2" />
+            <Skeleton className="w-full h-76 mb-2 rounded-lg" />
             <Skeleton className="h-6 w-3/4 mb-2" variant="text" />
           </div>
           {/* Side Stories Skeleton */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-8">
             {[...Array(3)].map((_, idx) => (
               <div key={idx} className="relative group cursor-pointer">
-                <Skeleton className="w-full h-32 md:h-36 mb-2" />
+                <Skeleton className="w-full h-32 md:h-36 mb-2 rounded-lg" />
                 <Skeleton className="h-4 w-3/4 mb-1" variant="text" />
               </div>
             ))}
@@ -105,10 +106,10 @@ export default function TopStories() {
   return (
     <section className="container bg-white mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">TOP STORIES</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Main Story */}
-        <Link href={`/stories/${stories[0].id}`} className="relative group cursor-pointer md:row-span-2">
-          <div className="relative h-76 rounded-xs overflow-hidden">
+        <Link href={`/stories/${stories[0].id}`} className="relative group cursor-pointer md:row-span-2 transition-all duration-300 hover:scale-[1.02]">
+          <div className="relative h-76 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
             <Image
               src={stories[0].image || "/placeholder.svg"}
               alt={stories[0].title}
@@ -125,10 +126,10 @@ export default function TopStories() {
           </div>
         </Link>
         {/* Side Stories Grid */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-8">
           {stories.slice(1, 4).map((story, idx) => (
-            <Link key={story.id + idx} href={`/stories/${story.id}`} className={`relative group cursor-pointer ${idx === 2 ? 'col-span-2' : ''}`}>
-              <div className={`relative h-32 md:h-36 rounded-xs overflow-hidden w-full`}>
+            <Link key={`${story.id}-${idx}`} href={`/stories/${story.id}`} className={`relative group cursor-pointer transition-all duration-300 hover:scale-[1.02] ${idx === 2 ? 'col-span-2' : ''}`}>
+              <div className={`relative h-32 md:h-36 rounded-lg overflow-hidden w-full shadow-md hover:shadow-xl transition-shadow duration-300`}>
                 <Image
                   src={story.image || "/placeholder.svg"}
                   alt={story.title}
